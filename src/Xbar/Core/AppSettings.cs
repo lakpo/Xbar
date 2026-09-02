@@ -27,7 +27,7 @@ public sealed class AppSettings
     // --- Apparence ---
     public AppLanguage Language { get; set; } = AppLanguage.Auto;
     public BarTheme Theme { get; set; } = BarTheme.Auto;
-    public LabelMode Labels { get; set; } = LabelMode.IconAndTextOnHover;
+    public LabelMode Labels { get; set; } = LabelMode.LabelOnItemHover;
 
     /// <summary>Taille d'un bouton en pixels logiques (DIP).</summary>
     public double ButtonSize { get; set; } = 24;

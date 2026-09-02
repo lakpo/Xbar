@@ -1,161 +1,229 @@
 # Xbar
 
-Barre de raccourcis en surimpression de l'Explorateur Windows 11.
+**A shortcut bar that lives inside your Windows 11 File Explorer windows.**
 
-Xbar ajoute une petite barre verticale **à l'intérieur du bord droit de chaque fenêtre de
-l'Explorateur**. Elle suit sa fenêtre, partage la même configuration partout, et ne modifie
-rien dans `explorer.exe` : **aucune injection de DLL, aucun patch, aucun droit administrateur**.
+*[Lire ce document en français](README.fr.md)*
 
-- C# / .NET 10 / WPF
-- Interface en **français et en anglais** (suit la langue de Windows par défaut)
-- Win32 + COM du Shell + UI Automation
-- Windows 11 (build 22000+), x64
+![The Xbar bar inside an Explorer window](docs/xbar-bar.png)
 
-## Fonctionnalités
+Xbar adds a slim vertical bar just inside the right edge of every Explorer window. Pin the
+folders, files and applications you reach for all day, and get to them without leaving the
+window you are already in.
 
-**La barre**
-- une barre par fenêtre Explorer, positionnée à l'intérieur du bord droit ;
-- suit les déplacements, redimensionnements, maximisation, minimisation ;
-- reste au-dessus de son Explorer sans jamais passer devant les autres applications ;
-- se masque quand la fenêtre devient trop petite ;
-- l''écart au bord droit vaut ''max(marge, largeur de la scrollbar)'' : la marge et l''évitement
-  de la barre de défilement ne s''additionnent pas, et ce dernier ne joue que lorsque la marge
-  choisie est insuffisante — une marge de 0 colle donc vraiment au bord si la vue ne défile pas ;
-- thème clair/sombre automatique, opacité, taille des boutons, masquage automatique ;
-- poignée en haut de la barre : la faire glisser verticalement repositionne la barre, et la
-  position est mémorisée en fraction de la hauteur de la fenêtre (elle tient donc quelle que
-  soit la taille de l''Explorateur) ; les presets Haut/Centre/Bas reprennent la main ;
-- trois modes d'affichage : icônes seules, icône + texte, ou **icônes avec le texte au survol**
-  (mode par défaut : la barre s'élargit en 200 ms quand la souris passe dessus).
+It does not inject anything into `explorer.exe`, does not patch it, and never asks for
+administrator rights.
 
-**Raccourcis**
-- glisser un **dossier**, un **fichier**, un **`.exe`** ou un **`.lnk`** sur la barre pour
-  l'ajouter (les `.lnk` sont résolus vers leur cible) ; un fichier s'ouvre avec
-  l'application qui lui est associée, comme un double-clic dans l'Explorateur ;
-- réorganisation par glisser-déposer, séparateurs, renommage, icône personnalisée, suppression ;
-- éditeur : nom, chemin, arguments, dossier de travail (défaut / dossier Explorer courant /
-  personnalisé), acceptation des fichiers déposés ;
-- jeton `{currentFolder}` dans les arguments, par exemple `cursor.exe "{currentFolder}"` ;
-- un fichier déposé sur un bouton d'**application** lui est passé en argument, comme sur son
-  exécutable ;
-- un fichier déposé sur un bouton de **dossier** y est déplacé (copié entre volumes, Ctrl pour
-  forcer la copie, Maj le déplacement) ;
-- pendant le survol, l'icône du bouton visé grandit de 20 % et une étiquette annonce l'effet
-  (« Copier vers : *dossier* », « Ouvrir avec : *application* »).
+---
 
-**Dossiers**
-- clic gauche : naviguer dans l'onglet courant ;
-- clic molette : nouvel onglet ;
-- Ctrl + clic : nouvelle fenêtre.
+## Download
 
-**Actions intégrées**
-- *Coller l'image du presse-papiers* dans le dossier affiché, nommée
-  `Clipboard_2026-09-01_13-42-18.png` ; format PNG / JPG / WebP, nom demandé en option,
-  retour visuel discret sans boîte de dialogue ;
-- *Dossiers récents* : menu des 20 derniers dossiers parcourus (clic pour y aller, Ctrl+clic
-  pour une nouvelle fenêtre), persisté dans `history.json`. La taille de l'historique se règle
-  avec `maxHistoryFolders` dans `settings.json`.
+1. Grab **`Xbar.exe`** from the [latest release](https://github.com/lakpo/Xbar/releases/latest).
+2. Put it wherever you like — `C:\Users\<you>\Apps\Xbar\` is a good spot.
+3. Double-click it.
 
-**Double-clic dans le vide**
-- double-clic dans une zone vide de la vue des fichiers → dossier parent ;
-- ignoré sur un fichier, un dossier, le panneau de navigation, la barre d'adresse, la
-  recherche, la barre elle-même, le Bureau, et pendant un glisser-déposer ;
-- ne fait rien à la racine d'un disque.
+That is the whole installation. No setup wizard, no runtime to install, nothing written outside
+your own user profile. Xbar appears in the notification area and a bar shows up in every open
+Explorer window.
 
-**Divers**
-- icône dans la zone de notification, fenêtre de paramètres, menu contextuel sur la barre ;
-- instance unique (une deuxième exécution ouvre les paramètres de la première) ;
-- vérification discrète des mises à jour via GitHub Releases, désactivable, jamais automatique ;
-- aucune télémétrie, aucun envoi réseau hors vérification de version, journaux locaux.
+> Windows may show a **SmartScreen** warning the first time, because the file is not
+> code-signed. Click *More info* → *Run anyway*.
+
+**Prefer a self-contained folder?** Download `Xbar-<version>-portable.zip` from the same release
+and unzip it anywhere, a USB stick included. In that mode Xbar keeps everything in a `Data\`
+folder next to the executable and writes nothing else to the machine.
+
+| | Where settings live | Starts with Windows |
+|---|---|---|
+| `Xbar.exe` on its own | `%AppData%\Xbar\` | yes, from the first run |
+| Portable zip | `Data\` next to the exe | no — opt in from the tray icon |
+
+To uninstall: quit Xbar from the tray icon, delete the executable, and optionally remove
+`%AppData%\Xbar\`.
+
+**Requirements:** Windows 11 (build 22000 or later), 64-bit. No .NET installation needed.
+
+---
+
+## Getting started
+
+**Add a shortcut** — drag a folder, a file, an application or a `.lnk` onto the bar. Or
+right-click the bar → *Add*, or use the Settings window.
+
+**Use a folder shortcut**
+
+| Gesture | Result |
+|---|---|
+| Left click | Go to that folder in the current tab |
+| Middle click | Open it in a new tab |
+| Ctrl + click | Open it in a new window |
+
+**Drop files onto a button.** Dropped on an *application*, they are passed to it as arguments —
+exactly as if you had dropped them on its executable. Dropped on a *folder*, they are moved
+there (copied across drives; Ctrl forces a copy, Shift a move). The target icon grows and a
+label spells out what will happen before you let go.
+
+**Double-click empty space** in the file list to go up to the parent folder. Clicking a file, a
+folder, the navigation pane or the address bar is left alone, and nothing happens at the root of
+a drive.
+
+**Rearrange** by dragging buttons within the bar. Right-click any button to rename it, change its
+icon, add separators, or remove it.
+
+**Move the bar** by dragging the small grip at its top. The position is remembered as a fraction
+of the window height, so it stays where you put it whatever the size of the window.
+
+---
+
+## Features
+
+**The bar**
+
+- one bar per Explorer window, all sharing a single configuration;
+- follows its window when you move, resize, maximise or minimise it;
+- stays above its own Explorer window without ever covering your other applications;
+- steps aside only when a scroll bar is actually shown, so a margin of 0 really does hug the edge;
+- hides itself when the window becomes too small to hold it;
+- light/dark theme following Windows, adjustable opacity and button size, optional auto-hide.
+
+**Four display modes**
+
+| Mode | Behaviour |
+|---|---|
+| Icons only | Compact, tooltip on hover |
+| Icon + text | Labels always visible |
+| Icons, text on bar hover | The whole bar widens when the mouse enters it |
+| **Icons, name on button hover** *(default)* | Only the hovered button slides its name out |
+
+**Shortcuts**
+
+- folders, files, applications and separators;
+- a file opens with its associated application, like a double-click in Explorer;
+- `.lnk` shortcuts are resolved to their target;
+- per-shortcut editor: name, path, arguments, working directory, drop handling;
+- the `{currentFolder}` token in arguments — for example `cursor.exe "{currentFolder}"` — is
+  replaced by the folder currently on screen.
+
+**Built-in actions**
+
+- **Paste clipboard image** into the folder on screen, named `Clipboard_2026-09-01_13-42-18.png`,
+  as PNG, JPG or WebP, with an optional name prompt and a discreet confirmation.
+- **Recent folders** — a menu of the last 20 folders you visited, across every Explorer window.
+  Click to go there, Ctrl+click to open a new window.
+
+**Elsewhere**
+
+- notification area icon, settings window, right-click menu on the bar itself;
+- English and French interface, following the Windows language by default;
+- single instance — launching Xbar again opens the settings of the running one;
+- quiet update check through GitHub Releases: never automatic, and switchable off;
+- no telemetry, no analytics, nothing sent anywhere; logs stay on your machine.
+
+![The Xbar settings window](docs/xbar-settings.png)
+
+---
 
 ## Configuration
 
-| Mode | Emplacement |
+| Mode | Location |
 |---|---|
-| Installé | `%AppData%\Xbar\` |
-| Portable | `Data\` à côté de `Xbar.exe` (marqueur : fichier `portable`) |
+| Installed | `%AppData%\Xbar\` |
+| Portable | `Data\` next to `Xbar.exe` (marker: a file named `portable`) |
 
-Contenu : `settings.json`, `shortcuts.json`, `history.json`, `icons\`, `logs\`.
+Holding `settings.json`, `shortcuts.json`, `history.json`, `icons\` and `logs\`.
 
-Au premier lancement, la barre contient le dossier Images de l'utilisateur (avec le nom
-localisé par Windows), un séparateur, puis les deux actions intégrées.
+On the very first run the bar contains your Pictures folder — under the name Windows gives it —
+a separator, then the two built-in actions.
 
-Le démarrage avec Windows est activé par défaut en version installée, désactivé en portable
-(clé `HKCU\...\CurrentVersion\Run`, donc sans UAC).
+Startup with Windows uses the per-user `Run` key, so it never triggers a UAC prompt.
 
-## Compilation
+---
+
+## Building from source
 
 ```bash
 dotnet build src/Xbar/Xbar.csproj
 ```
 
-## Livrables
+Requires the .NET 10 SDK. To produce the deliverables:
 
 ```powershell
 pwsh build\publish.ps1
 ```
 
-Produit dans `dist\` la version portable (dossier + zip) et, si
-[Inno Setup 6](https://jrsoftware.org/isdl.php) est installé, l'installateur
-`Xbar-<version>-setup.exe` (installation dans le profil utilisateur, sans UAC).
+This writes the portable version — folder and zip — to `dist\`, and, if
+[Inno Setup 6](https://jrsoftware.org/isdl.php) is installed, an `Xbar-<version>-setup.exe` that
+installs into the user profile without UAC. Both builds are self-contained single files: no .NET
+runtime is required on the target machine.
 
-Les deux versions sont **autonomes** : aucun runtime .NET n'est requis chez l'utilisateur.
+The script refuses to run while an Xbar started from `dist\` is still open, and it preserves an
+existing portable `Data\` folder across rebuilds.
 
-## Architecture
+---
+
+## How it works
 
 ```
 src/Xbar/
-  Core/                 chemins, journaux, configuration, thème, instance unique, démarrage Windows
-  Interop/              P/Invoke Win32, hooks WinEvent, interfaces COM du Shell
-  ExplorerIntegration/  détection des fenêtres, navigation, double-clic dans le vide
-  Overlay/              fenêtre de la barre, placement, glisser-déposer, menus, retour visuel
-  Shortcuts/            modèle, stockage, lancement, résolution des .lnk
-  Actions/              actions intégrées (collage d'image, dossiers récents)
-  Icons/                icônes du Shell et icônes personnalisées
-  Tray/                 icône de la zone de notification
-  UI/                   paramètres, éditeur de raccourci, saisie
-  Update/               vérification GitHub Releases
-  Localization/         textes de l'interface (Resources/Strings.resx + .fr.resx)
+  Core/                 paths, logging, settings, theme, single instance, Windows startup
+  Interop/              Win32 P/Invoke, WinEvent hooks, Shell COM interfaces
+  ExplorerIntegration/  window tracking, navigation, folder history, empty-area double-click
+  Overlay/              the bar window, placement, drag & drop, menus, floating labels
+  Shortcuts/            model, storage, launching, .lnk resolution
+  Actions/              built-in actions
+  Icons/                shell icons and custom icons
+  Tray/                 notification area icon
+  UI/                   settings, shortcut editor, input dialog
+  Localization/         interface strings (Resources/Strings.resx + .fr.resx)
+  Update/               GitHub Releases check
 ```
 
-## Notes techniques
+A few decisions worth knowing about, mostly because the obvious approach turned out to be wrong.
 
-- **Détection des fenêtres** : `SetWinEventHook` hors processus (création, destruction,
-  déplacement, minimisation, premier plan) et une réconciliation légère toutes les 5 s qui sert
-  de filet de sécurité, notamment quand `explorer.exe` redémarre.
-- **Superposition** : la barre est une fenêtre WPF `WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW`
-  déclarée *possédée* par la fenêtre Explorer (`GWLP_HWNDPARENT`). C'est ce qui la maintient
-  au-dessus de son Explorer sans la rendre Always-On-Top.
-- **Dossier courant et navigation** : objets COM publics de l'Explorateur
-  (`ShellWindows` / `IShellBrowser` / `IFolderView`). Sous Windows 11 les onglets d'une même
-  fenêtre partagent un HWND et possèdent chacun leur `IShellBrowser`, sans qu'aucune propriété
-  n'indique lequel est affiché — leurs vues sont toutes marquées visibles, avec la même
-  géométrie. L'onglet actif est donc identifié par l'**ordre Z** : son conteneur
-  `ShellTabWindowClass` est le premier de sa fratrie. La navigation passe ensuite par
-  `IShellBrowser::BrowseObject` (`SBSP_SAMEBROWSER`, et `SBSP_PARENT` pour remonter).
-- **Nouvel onglet** : Windows n'expose aucune API publique pour les onglets de l'Explorateur.
-  Xbar crée l'onglet avec `Ctrl+T` puis y navigue par COM ; si l'onglet n'apparaît pas, il
-  ouvre une nouvelle fenêtre. C'est le seul endroit où une frappe est simulée.
-- **Historique des dossiers** : l'Explorateur ne signale pas ses navigations, mais renomme sa
-  fenêtre à chaque changement de dossier ou d'onglet actif. Xbar écoute donc
-  `EVENT_OBJECT_NAMECHANGE` et relit le dossier affiché — toujours sans polling.
-- **Barre de défilement** : la vue moderne la dessine en DirectUI — ni WS_VSCROLL ni
-  GetScrollBarInfo ne la voient (un dossier de plusieurs milliers de fichiers est rapporté
-  « invisible »). Xbar interroge donc le ScrollPattern par UI Automation, hors du thread UI,
-  avec mise en cache et revérification à la navigation ou au redimensionnement.
-- **Taille des icônes** : Windows n''agrandit pas une icône absente d''un format donné, il la
-  **centre** dans le canevas — une icône de dossier personnalisée n''occupe ainsi que 48 px sur
-  les 256 de la liste JUMBO. Xbar choisit la liste d''images adaptée à la taille de rendu et
-  mesure le remplissage réel, en retombant sur un format plus petit si le dessin est trop noyé.
-- **Langues** : les textes vivent dans `Resources\Strings.resx` (anglais, langue neutre) et
-  `Strings.fr.resx`, compilé en assembly satellite et embarqué dans l'exécutable unique.
-  Le XAML les résout à l'analyse via `{loc:Loc Cle}` : changer de langue rouvre donc la
-  fenêtre des paramètres. Ajouter une langue = un fichier `.resx` de plus.
-- **Double-clic dans le vide** : hook souris bas niveau (hors processus), puis vérification de
-  la chaîne des classes de fenêtres (`SHELLDLL_DefView`) et enfin UI Automation pour distinguer
-  une zone vide d'un élément de liste. Le clic n'est jamais consommé.
+**Window tracking** uses out-of-process `SetWinEventHook` — creation, destruction, movement,
+minimisation, foreground changes — plus a light reconciliation every 5 seconds as a safety net,
+which also covers `explorer.exe` restarting. No permanent polling.
 
-## Hors périmètre V1
+**The overlay** is a WPF window with `WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW`, declared *owned* by
+the Explorer window through `GWLP_HWNDPARENT`. Windows then keeps it above its owner for free,
+without it ever becoming topmost. Nothing may touch its Z-order afterwards: any `SetWindowPos`
+with `HWND_TOP` would raise it above every other application.
 
-Profils, plugins, scripts personnalisés, gestion multi-écrans avancée, DPI par écran,
-remplacement des onglets natifs.
+**The active tab.** On Windows 11 all tabs of a window share one HWND and each owns an
+`IShellBrowser`, but nothing marks the visible one — every view reports itself visible, with
+identical geometry. The reliable discriminator turns out to be Z-order: the active tab's
+`ShellTabWindowClass` container comes first among its siblings. Reading the folder and navigating
+then go through `IShellBrowser::BrowseObject`.
+
+**New tabs** are the one place a keystroke is simulated: Windows exposes no public API for
+Explorer tabs, so Xbar sends `Ctrl+T` and then navigates the new tab through COM, falling back to
+a new window if the tab never appears.
+
+**The scroll bar** is drawn by DirectUI in the modern view: neither `WS_VSCROLL` nor
+`GetScrollBarInfo` can see it — a folder holding thousands of files still reports "invisible".
+Xbar queries the `ScrollPattern` through UI Automation instead, off the UI thread, cached and
+re-checked on navigation or resize.
+
+**Icon sizes.** Windows does not scale an icon up when the requested size is missing — it
+*centres* it in a larger canvas, so a custom folder icon fills only 48 px of the 256 px JUMBO
+list and looks tiny. Xbar picks the image list matching the render size and measures how much of
+the canvas is actually painted, dropping to a smaller list when the artwork is lost in it.
+
+**Empty-area double-click** uses a low-level mouse hook (out of process; the click is never
+swallowed), then the window class chain — the file view always sits inside `SHELLDLL_DefView`,
+which rules out the navigation pane, address bar, search box and the desktop — and finally UI
+Automation to tell empty space from a list item. That probe runs on the *first* click of the
+pair: by the second one Explorer has already opened the folder, and the answer would be wrong.
+
+---
+
+## Not in this version
+
+Profiles, plugins, custom scripting, advanced multi-monitor handling, per-monitor DPI, replacing
+the native tabs — and a bar inside Open/Save dialogs: those use the common dialog, which
+`ShellWindows` cannot see, so none of the COM integration above applies to them.
+
+---
+
+## Licence
+
+None yet — see the repository owner.

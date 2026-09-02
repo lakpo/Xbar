@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:loc="clr-namespace:Xbar.Localization"
         Title="{loc:Loc Settings_Title}"
-        Width="640" Height="560"
-        MinWidth="560" MinHeight="480"
+        Width="640" Height="580"
+        MinWidth="560" MinHeight="500"
         WindowStartupLocation="CenterScreen">
 
     <DockPanel Margin="12">
