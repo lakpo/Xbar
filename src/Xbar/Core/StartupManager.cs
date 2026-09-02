@@ -12,6 +12,14 @@ public static class StartupManager
     private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
     private const string ValueName = "Xbar";
 
+    /// <summary>
+    /// Marque un lancement declenche par Windows. Une telle instance qui en trouve une autre
+    /// deja en place doit s'effacer sans bruit, plutot que d'ouvrir les parametres : au
+    /// demarrage, la cle Run et la fonction "Relancer les applications" peuvent tirer toutes
+    /// les deux.
+    /// </summary>
+    public const string AutostartSwitch = "--autostart";
+
     public static bool IsEnabled()
     {
         try
@@ -37,7 +45,7 @@ public static class StartupManager
             {
                 var exe = Environment.ProcessPath;
                 if (string.IsNullOrEmpty(exe)) return;
-                key.SetValue(ValueName, $"\"{exe}\"");
+                key.SetValue(ValueName, $"\"{exe}\" {AutostartSwitch}");
             }
             else key.DeleteValue(ValueName, throwOnMissingValue: false);
 
@@ -59,7 +67,7 @@ public static class StartupManager
         var self = Environment.ProcessPath;
         if (string.IsNullOrEmpty(self)) return false;
 
-        var registered = value.Trim().Trim('"');
+        var registered = ExtractPath(value);
         if (registered.Length == 0) return false;
 
         try
@@ -93,6 +101,20 @@ public static class StartupManager
         }
 
         SetEnabled(true);
+    }
+
+    /// <summary>Chemin de l'executable dans une valeur Run, arguments eventuels ecartes.</summary>
+    private static string ExtractPath(string value)
+    {
+        var v = value.Trim();
+        if (v.StartsWith('"'))
+        {
+            var end = v.IndexOf('"', 1);
+            return end > 1 ? v[1..end] : string.Empty;
+        }
+
+        var space = v.IndexOf(' ');
+        return space > 0 ? v[..space] : v;
     }
 
     private static string? ReadRawValue()

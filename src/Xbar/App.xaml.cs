@@ -9,6 +9,7 @@ using Xbar.Overlay;
 using Xbar.Shortcuts;
 using Xbar.Tray;
 using Xbar.Update;
+using System.Linq;
 
 namespace Xbar;
 
@@ -28,8 +29,11 @@ public partial class App : Application
         _instance = new SingleInstance();
         if (!_instance.IsFirstInstance)
         {
-            // Une instance existe deja : on lui demande d'ouvrir ses parametres.
-            SingleInstance.SendCommand(CommandShowSettings);
+            // Une instance existe deja. Relancer Xbar a la main veut dire "montre-toi" ; un
+            // lancement automatique au demarrage, lui, ne doit rien afficher.
+            var launchedByWindows = e.Args.Any(
+                a => string.Equals(a, StartupManager.AutostartSwitch, StringComparison.OrdinalIgnoreCase));
+            if (!launchedByWindows) SingleInstance.SendCommand(CommandShowSettings);
             Shutdown();
             return;
         }
