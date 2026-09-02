@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.Win32;
 
 namespace Xbar.Core;
@@ -16,7 +17,7 @@ public static class StartupManager
         try
         {
             using var key = Registry.CurrentUser.OpenSubKey(RunKey);
-            return key?.GetValue(ValueName) is string s && s.Contains("Xbar", StringComparison.OrdinalIgnoreCase);
+            return key?.GetValue(ValueName) is string s && PointsToThisExe(s);
         }
         catch (Exception ex)
         {
@@ -45,6 +46,31 @@ public static class StartupManager
         catch (Exception ex)
         {
             Log.Error("Modification du demarrage automatique", ex);
+        }
+    }
+
+    /// <summary>
+    /// La valeur Run est unique pour tout Xbar : si deux copies coexistent (portable et installee),
+    /// celle qui n'est pas inscrite doit se voir "desactivee" plutot que de croire l'entree sienne
+    /// et laisser l'autre demarrer a sa place.
+    /// </summary>
+    private static bool PointsToThisExe(string value)
+    {
+        var self = Environment.ProcessPath;
+        if (string.IsNullOrEmpty(self)) return false;
+
+        var registered = value.Trim().Trim('"');
+        if (registered.Length == 0) return false;
+
+        try
+        {
+            return string.Equals(
+                Path.GetFullPath(registered), Path.GetFullPath(self), StringComparison.OrdinalIgnoreCase);
+        }
+        catch (Exception ex)
+        {
+            Log.Warn($"Comparaison du chemin de demarrage : {ex.Message}");
+            return false;
         }
     }
 
