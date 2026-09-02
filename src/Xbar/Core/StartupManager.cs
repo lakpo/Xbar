@@ -81,6 +81,31 @@ public static class StartupManager
     {
         if (AppPaths.IsPortable) return;
         if (IsEnabled()) return;
+
+        // Une entree deja presente appartient a une autre copie de Xbar : elle a ete inscrite
+        // volontairement, souvent par l'installation dont l'utilisateur se sert vraiment. Un
+        // premier lancement ne doit pas la lui prendre en silence.
+        var existing = ReadRawValue();
+        if (!string.IsNullOrWhiteSpace(existing))
+        {
+            Log.Info($"Demarrage avec Windows : deja confie a une autre copie ({existing}), inchange.");
+            return;
+        }
+
         SetEnabled(true);
+    }
+
+    private static string? ReadRawValue()
+    {
+        try
+        {
+            using var key = Registry.CurrentUser.OpenSubKey(RunKey);
+            return key?.GetValue(ValueName) as string;
+        }
+        catch (Exception ex)
+        {
+            Log.Warn($"Lecture de l'entree de demarrage : {ex.Message}");
+            return null;
+        }
     }
 }
