@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" /></xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" /></xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Action_ClearHistory" xml:space="preserve">
+    <value>Clear history</value>
+  </data>
+  <data name="Action_FileNamePrompt" xml:space="preserve">
+    <value>Save the image as:</value>
+  </data>
+  <data name="Action_FileNameTitle" xml:space="preserve">
+    <value>File name</value>
+  </data>
+  <data name="Action_NoRecentFolder" xml:space="preserve">
+    <value>No recent folder</value>
+  </data>
+  <data name="Action_PasteImage" xml:space="preserve">
+    <value>Paste clipboard image</value>
+  </data>
+  <data name="Action_RecentFolders" xml:space="preserve">
+    <value>Recent folders</value>
+  </data>
+  <data name="Bar_DropCopyTo" xml:space="preserve">
+    <value>Copy to: {0}</value>
+  </data>
+  <data name="Bar_DropMoveTo" xml:space="preserve">
+    <value>Move to: {0}</value>
+  </data>
+  <data name="Bar_DropOpenWith" xml:space="preserve">
+    <value>Open with: {0}</value>
+  </data>
+  <data name="Bar_FileTooltip" xml:space="preserve">
+    <value>{0}
+Open with the associated application</value>
+  </data>
+  <data name="Bar_FolderTooltip" xml:space="preserve">
+    <value>{0}
+Click: open here  ·  Middle-click: new tab  ·  Ctrl+click: new window</value>
+  </data>
+  <data name="Bar_GripTooltip" xml:space="preserve">
+    <value>Drag to move the bar</value>
+  </data>
+  <data name="Bar_NewName" xml:space="preserve">
+    <value>New name:</value>
+  </data>
+  <data name="Bar_Rename" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="Common_AllFiles" xml:space="preserve">
+    <value>All files|*.*</value>
+  </data>
+  <data name="Common_Browse" xml:space="preserve">
+    <value>Browse...</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Common_Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Common_Separator" xml:space="preserve">
+    <value>Separator</value>
+  </data>
+  <data name="Dialog_ChooseApplication" xml:space="preserve">
+    <value>Choose an application</value>
+  </data>
+  <data name="Dialog_ChooseFile" xml:space="preserve">
+    <value>Choose a file</value>
+  </data>
+  <data name="Dialog_ChooseFolder" xml:space="preserve">
+    <value>Choose a folder</value>
+  </data>
+  <data name="Dialog_ChooseIcon" xml:space="preserve">
+    <value>Choose an icon</value>
+  </data>
+  <data name="Dialog_FilterApps" xml:space="preserve">
+    <value>Applications|*.exe</value>
+  </data>
+  <data name="Dialog_FilterAppsAndLinks" xml:space="preserve">
+    <value>Applications and shortcuts|*.exe;*.lnk</value>
+  </data>
+  <data name="Dialog_FilterImages" xml:space="preserve">
+    <value>Images and icons|*.png;*.ico;*.jpg;*.jpeg;*.bmp;*.exe;*.dll</value>
+  </data>
+  <data name="Editor_AcceptDrops" xml:space="preserve">
+    <value>Accept files and folders dropped on this button (passed as arguments)</value>
+  </data>
+  <data name="Editor_Arguments" xml:space="preserve">
+    <value>Arguments (optional)</value>
+  </data>
+  <data name="Editor_ArgumentsHint" xml:space="preserve">
+    <value>The {currentFolder} token is replaced by the folder shown in Explorer. Example: cursor.exe "{currentFolder}"</value>
+  </data>
+  <data name="Editor_MissingFile" xml:space="preserve">
+    <value>This file cannot be found. Save anyway?</value>
+  </data>
+  <data name="Editor_MissingFolder" xml:space="preserve">
+    <value>This folder cannot be found. Save anyway?</value>
+  </data>
+  <data name="Editor_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Editor_TargetApplication" xml:space="preserve">
+    <value>Executable path</value>
+  </data>
+  <data name="Editor_TargetFile" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Editor_TargetFolder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="Editor_TitleAction" xml:space="preserve">
+    <value>Edit action</value>
+  </data>
+  <data name="Editor_TitleApplication" xml:space="preserve">
+    <value>Edit shortcut</value>
+  </data>
+  <data name="Editor_TitleFile" xml:space="preserve">
+    <value>Edit file</value>
+  </data>
+  <data name="Editor_TitleFolder" xml:space="preserve">
+    <value>Edit folder</value>
+  </data>
+  <data name="Editor_WorkCurrent" xml:space="preserve">
+    <value>Folder shown in Explorer</value>
+  </data>
+  <data name="Editor_WorkCustom" xml:space="preserve">
+    <value>Custom:</value>
+  </data>
+  <data name="Editor_WorkDefault" xml:space="preserve">
+    <value>Default (the application's folder)</value>
+  </data>
+  <data name="Editor_WorkingDirectory" xml:space="preserve">
+    <value>Working directory</value>
+  </data>
+  <data name="Menu_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Menu_AddAction" xml:space="preserve">
+    <value>Xbar action</value>
+  </data>
+  <data name="Menu_AutoHide" xml:space="preserve">
+    <value>Auto-hide</value>
+  </data>
+  <data name="Menu_ChangeIcon" xml:space="preserve">
+    <value>Change icon...</value>
+  </data>
+  <data name="Menu_DefaultIcon" xml:space="preserve">
+    <value>Default icon</value>
+  </data>
+  <data name="Menu_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Menu_Edit" xml:space="preserve">
+    <value>Edit...</value>
+  </data>
+  <data name="Menu_Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Menu_OpenLogs" xml:space="preserve">
+    <value>Open the logs</value>
+  </data>
+  <data name="Menu_OpenNewTab" xml:space="preserve">
+    <value>Open in a new tab</value>
+  </data>
+  <data name="Menu_OpenNewWindow" xml:space="preserve">
+    <value>Open in a new window</value>
+  </data>
+  <data name="Menu_Quit" xml:space="preserve">
+    <value>Quit Xbar</value>
+  </data>
+  <data name="Menu_Reload" xml:space="preserve">
+    <value>Reload Xbar</value>
+  </data>
+  <data name="Menu_Rename" xml:space="preserve">
+    <value>Rename...</value>
+  </data>
+  <data name="Menu_SeparatorAfter" xml:space="preserve">
+    <value>Add a separator after</value>
+  </data>
+  <data name="Menu_SeparatorBefore" xml:space="preserve">
+    <value>Add a separator before</value>
+  </data>
+  <data name="Menu_Settings" xml:space="preserve">
+    <value>Settings...</value>
+  </data>
+  <data name="Msg_Copied" xml:space="preserve">
+    <value>Copied to {0}</value>
+  </data>
+  <data name="Msg_DropFailed" xml:space="preserve">
+    <value>Drop failed</value>
+  </data>
+  <data name="Msg_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Msg_FileNotFound" xml:space="preserve">
+    <value>File not found</value>
+  </data>
+  <data name="Msg_FolderNotFound" xml:space="preserve">
+    <value>Folder not found</value>
+  </data>
+  <data name="Msg_LaunchFailed" xml:space="preserve">
+    <value>Could not launch</value>
+  </data>
+  <data name="Msg_MenuUnavailable" xml:space="preserve">
+    <value>Menu unavailable</value>
+  </data>
+  <data name="Msg_Moved" xml:space="preserve">
+    <value>Moved to {0}</value>
+  </data>
+  <data name="Msg_NoClipboardImage" xml:space="preserve">
+    <value>No image in the clipboard</value>
+  </data>
+  <data name="Msg_NoPath" xml:space="preserve">
+    <value>No path set</value>
+  </data>
+  <data name="Msg_OpenFailed" xml:space="preserve">
+    <value>Could not open</value>
+  </data>
+  <data name="Msg_SaveFailed" xml:space="preserve">
+    <value>Could not save</value>
+  </data>
+  <data name="Msg_UnknownAction" xml:space="preserve">
+    <value>Unknown action</value>
+  </data>
+  <data name="Msg_UnknownFolder" xml:space="preserve">
+    <value>Explorer folder unknown</value>
+  </data>
+  <data name="Msg_UnsupportedDrop" xml:space="preserve">
+    <value>Unsupported type</value>
+  </data>
+  <data name="Msg_UpdateAvailable" xml:space="preserve">
+    <value>Version {0} is available.</value>
+  </data>
+  <data name="Settings_AddAction" xml:space="preserve">
+    <value>Add an action...</value>
+  </data>
+  <data name="Settings_AddApplication" xml:space="preserve">
+    <value>Add an application...</value>
+  </data>
+  <data name="Settings_AddFile" xml:space="preserve">
+    <value>Add a file...</value>
+  </data>
+  <data name="Settings_AddFolder" xml:space="preserve">
+    <value>Add a folder...</value>
+  </data>
+  <data name="Settings_AddSeparator" xml:space="preserve">
+    <value>Add a separator</value>
+  </data>
+  <data name="Settings_Anchor" xml:space="preserve">
+    <value>Vertical position</value>
+  </data>
+  <data name="Settings_AnchorBottom" xml:space="preserve">
+    <value>Bottom</value>
+  </data>
+  <data name="Settings_AnchorCenter" xml:space="preserve">
+    <value>Centre</value>
+  </data>
+  <data name="Settings_AnchorTop" xml:space="preserve">
+    <value>Top</value>
+  </data>
+  <data name="Settings_AskFileName" xml:space="preserve">
+    <value>Ask for the file name before saving</value>
+  </data>
+  <data name="Settings_AutoHide" xml:space="preserve">
+    <value>Auto-hide (the bar shrinks until the mouse hovers it)</value>
+  </data>
+  <data name="Settings_AvoidScrollbar" xml:space="preserve">
+    <value>Never cover the scroll bar (widens the margin if needed)</value>
+  </data>
+  <data name="Settings_ButtonSize" xml:space="preserve">
+    <value>Button size</value>
+  </data>
+  <data name="Settings_ChangeIcon" xml:space="preserve">
+    <value>Change icon...</value>
+  </data>
+  <data name="Settings_CheckUpdates" xml:space="preserve">
+    <value>Quietly check for new versions (GitHub Releases)</value>
+  </data>
+  <data name="Settings_ClipboardSection" xml:space="preserve">
+    <value>“Paste clipboard image” action</value>
+  </data>
+  <data name="Settings_ConfigPath" xml:space="preserve">
+    <value>Configuration: {0}</value>
+  </data>
+  <data name="Settings_CopyDiagnostics" xml:space="preserve">
+    <value>Copy diagnostics</value>
+  </data>
+  <data name="Settings_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Settings_DiagnosticsCopied" xml:space="preserve">
+    <value>Diagnostics copied to the clipboard.</value>
+  </data>
+  <data name="Settings_DoubleClick" xml:space="preserve">
+    <value>Double-click empty space in the file view = go to parent folder</value>
+  </data>
+  <data name="Settings_EdgeMargin" xml:space="preserve">
+    <value>Margin from the right edge (px)</value>
+  </data>
+  <data name="Settings_Edit" xml:space="preserve">
+    <value>Edit...</value>
+  </data>
+  <data name="Settings_Format" xml:space="preserve">
+    <value>Format</value>
+  </data>
+  <data name="Settings_Height" xml:space="preserve">
+    <value>Height</value>
+  </data>
+  <data name="Settings_JpegQuality" xml:space="preserve">
+    <value>JPEG quality</value>
+  </data>
+  <data name="Settings_KindAction" xml:space="preserve">
+    <value>[Action]</value>
+  </data>
+  <data name="Settings_KindApp" xml:space="preserve">
+    <value>[App]</value>
+  </data>
+  <data name="Settings_KindFile" xml:space="preserve">
+    <value>[File]</value>
+  </data>
+  <data name="Settings_KindFolder" xml:space="preserve">
+    <value>[Folder]</value>
+  </data>
+  <data name="Settings_Labels" xml:space="preserve">
+    <value>Button contents</value>
+  </data>
+  <data name="Settings_LabelsIconAndText" xml:space="preserve">
+    <value>Icon + text</value>
+  </data>
+  <data name="Settings_LabelsIconsOnly" xml:space="preserve">
+    <value>Icons only</value>
+  </data>
+  <data name="Settings_LabelsOnBarHover" xml:space="preserve">
+    <value>Icons, text on bar hover</value>
+  </data>
+  <data name="Settings_LabelsOnItemHover" xml:space="preserve">
+    <value>Icons, name on button hover</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Settings_LanguageAuto" xml:space="preserve">
+    <value>Automatic (Windows language)</value>
+  </data>
+  <data name="Settings_LanguageEnglish" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Settings_LanguageFrench" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="Settings_MinSize" xml:space="preserve">
+    <value>Hide the bar when the Explorer window is smaller than:</value>
+  </data>
+  <data name="Settings_MoveDown" xml:space="preserve">
+    <value>Move down</value>
+  </data>
+  <data name="Settings_MoveUp" xml:space="preserve">
+    <value>Move up</value>
+  </data>
+  <data name="Settings_Opacity" xml:space="preserve">
+    <value>Opacity</value>
+  </data>
+  <data name="Settings_OpenLogs" xml:space="preserve">
+    <value>Open the logs folder</value>
+  </data>
+  <data name="Settings_PortableSuffix" xml:space="preserve">
+    <value>  (portable mode)</value>
+  </data>
+  <data name="Settings_PrivacyNote" xml:space="preserve">
+    <value>No telemetry, nothing sent automatically. Logs stay on this computer.</value>
+  </data>
+  <data name="Settings_RecentLog" xml:space="preserve">
+    <value>--- Recent log ---</value>
+  </data>
+  <data name="Settings_Rename" xml:space="preserve">
+    <value>Rename...</value>
+  </data>
+  <data name="Settings_RestartHint" xml:space="preserve">
+    <value>The settings window reopens to apply the language.</value>
+  </data>
+  <data name="Settings_Startup" xml:space="preserve">
+    <value>Start Xbar with Windows</value>
+  </data>
+  <data name="Settings_TabAppearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="Settings_TabBehaviour" xml:space="preserve">
+    <value>Behaviour</value>
+  </data>
+  <data name="Settings_TabGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Settings_TabShortcuts" xml:space="preserve">
+    <value>Shortcuts</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Settings_ThemeAuto" xml:space="preserve">
+    <value>Automatic (Windows theme)</value>
+  </data>
+  <data name="Settings_ThemeDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Settings_ThemeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Xbar — Settings</value>
+  </data>
+  <data name="Settings_UnsupportedType" xml:space="preserve">
+    <value>This file type is not supported.</value>
+  </data>
+  <data name="Settings_Verbose" xml:space="preserve">
+    <value>Detailed logging</value>
+  </data>
+  <data name="Settings_Width" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="Tray_ShowBar" xml:space="preserve">
+    <value>Show the bar</value>
+  </data>
+  <data name="Tray_Startup" xml:space="preserve">
+    <value>Start with Windows</value>
+  </data>
+</root>

@@ -1,0 +1,53 @@
+<Window x:Class="Xbar.UI.ShortcutEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:Xbar.Localization"
+        Title="{loc:Loc Editor_TitleApplication}"
+        Width="560"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterScreen">
+
+    <StackPanel Margin="18">
+
+        <TextBlock Text="{loc:Loc Editor_Name}" FontWeight="SemiBold" />
+        <TextBox x:Name="NameBox" Margin="0,4,0,12" Padding="4" />
+
+        <TextBlock x:Name="TargetLabel" Text="{loc:Loc Editor_TargetApplication}" FontWeight="SemiBold" />
+        <Grid Margin="0,4,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="TargetBox" Padding="4" />
+            <Button Grid.Column="1" Content="{loc:Loc Common_Browse}" Margin="8,0,0,0" Padding="12,4"
+                    Click="OnBrowseTarget" />
+        </Grid>
+
+        <StackPanel x:Name="ApplicationOptions">
+            <TextBlock Text="{loc:Loc Editor_Arguments}" FontWeight="SemiBold" />
+            <TextBox x:Name="ArgumentsBox" Margin="0,4,0,2" Padding="4" />
+            <TextBlock Text="{loc:Loc Editor_ArgumentsHint}"
+                       TextWrapping="Wrap" Opacity="0.7" FontSize="11" Margin="0,0,0,12" />
+
+            <TextBlock Text="{loc:Loc Editor_WorkingDirectory}" FontWeight="SemiBold" />
+            <StackPanel Margin="0,4,0,12">
+                <RadioButton x:Name="WorkDefault" Content="{loc:Loc Editor_WorkDefault}" Margin="0,2" />
+                <RadioButton x:Name="WorkCurrent" Content="{loc:Loc Editor_WorkCurrent}" Margin="0,2" />
+                <RadioButton x:Name="WorkCustom" Content="{loc:Loc Editor_WorkCustom}" Margin="0,2" />
+                <TextBox x:Name="WorkCustomBox" Margin="20,4,0,0" Padding="4"
+                         IsEnabled="{Binding IsChecked, ElementName=WorkCustom}" />
+            </StackPanel>
+
+            <CheckBox x:Name="AcceptDropsBox" Margin="0,0,0,12"
+                      Content="{loc:Loc Editor_AcceptDrops}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,6,0,0">
+            <Button Content="{loc:Loc Common_Cancel}" IsCancel="True" Style="{StaticResource DialogButtonStyle}" />
+            <Button Content="{loc:Loc Common_Save}" IsDefault="True" Click="OnSave"
+                    Style="{StaticResource DialogButtonStyle}" />
+        </StackPanel>
+    </StackPanel>
+</Window>

@@ -1,0 +1,161 @@
+<Window x:Class="Xbar.UI.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:Xbar.Localization"
+        Title="{loc:Loc Settings_Title}"
+        Width="640" Height="560"
+        MinWidth="560" MinHeight="480"
+        WindowStartupLocation="CenterScreen">
+
+    <DockPanel Margin="12">
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <TextBlock x:Name="VersionText" VerticalAlignment="Center" Opacity="0.6" Margin="0,0,16,0" />
+            <Button Content="{loc:Loc Common_Close}" IsCancel="True" Click="OnClose" Style="{StaticResource DialogButtonStyle}" />
+        </StackPanel>
+
+        <TabControl>
+
+            <TabItem Header="{loc:Loc Settings_TabAppearance}">
+                <StackPanel Margin="16">
+                    <TextBlock Text="{loc:Loc Settings_Language}" FontWeight="SemiBold" />
+                    <ComboBox x:Name="LanguageBox" Margin="0,4,0,2" Width="260" HorizontalAlignment="Left">
+                        <ComboBoxItem Content="{loc:Loc Settings_LanguageAuto}" />
+                        <ComboBoxItem Content="{loc:Loc Settings_LanguageFrench}" />
+                        <ComboBoxItem Content="{loc:Loc Settings_LanguageEnglish}" />
+                    </ComboBox>
+                    <TextBlock Text="{loc:Loc Settings_RestartHint}" TextWrapping="Wrap"
+                               Opacity="0.7" FontSize="11" Margin="0,0,0,12" />
+
+                    <TextBlock Text="{loc:Loc Settings_Theme}" FontWeight="SemiBold" />
+                    <ComboBox x:Name="ThemeBox" Margin="0,4,0,12" Width="220" HorizontalAlignment="Left">
+                        <ComboBoxItem Content="{loc:Loc Settings_ThemeAuto}" />
+                        <ComboBoxItem Content="{loc:Loc Settings_ThemeLight}" />
+                        <ComboBoxItem Content="{loc:Loc Settings_ThemeDark}" />
+                    </ComboBox>
+
+                    <TextBlock Text="{loc:Loc Settings_Labels}" FontWeight="SemiBold" />
+                    <ComboBox x:Name="LabelBox" Margin="0,4,0,12" Width="260" HorizontalAlignment="Left">
+                        <ComboBoxItem Content="{loc:Loc Settings_LabelsIconsOnly}" />
+                        <ComboBoxItem Content="{loc:Loc Settings_LabelsIconAndText}" />
+                        <ComboBoxItem Content="{loc:Loc Settings_LabelsOnBarHover}" />
+                        <ComboBoxItem Content="{loc:Loc Settings_LabelsOnItemHover}" />
+                    </ComboBox>
+
+                    <TextBlock Text="{loc:Loc Settings_ButtonSize}" FontWeight="SemiBold" />
+                    <DockPanel Margin="0,4,0,12">
+                        <TextBlock x:Name="ButtonSizeText" DockPanel.Dock="Right" Width="52"
+                                   TextAlignment="Right" VerticalAlignment="Center" />
+                        <Slider x:Name="ButtonSizeSlider" Minimum="20" Maximum="64"
+                                TickFrequency="2" IsSnapToTickEnabled="True" />
+                    </DockPanel>
+
+                    <TextBlock Text="{loc:Loc Settings_Opacity}" FontWeight="SemiBold" />
+                    <DockPanel Margin="0,4,0,12">
+                        <TextBlock x:Name="OpacityText" DockPanel.Dock="Right" Width="52"
+                                   TextAlignment="Right" VerticalAlignment="Center" />
+                        <Slider x:Name="OpacitySlider" Minimum="0.2" Maximum="1" TickFrequency="0.05"
+                                IsSnapToTickEnabled="True" />
+                    </DockPanel>
+
+                    <TextBlock Text="{loc:Loc Settings_Anchor}" FontWeight="SemiBold" />
+                    <ComboBox x:Name="AnchorBox" Margin="0,4,0,12" Width="220" HorizontalAlignment="Left">
+                        <ComboBoxItem Content="{loc:Loc Settings_AnchorTop}" />
+                        <ComboBoxItem Content="{loc:Loc Settings_AnchorCenter}" />
+                        <ComboBoxItem Content="{loc:Loc Settings_AnchorBottom}" />
+                    </ComboBox>
+
+                    <CheckBox x:Name="AvoidScrollbarBox" Margin="0,4"
+                              Content="{loc:Loc Settings_AvoidScrollbar}" />
+
+                    <TextBlock Text="{loc:Loc Settings_EdgeMargin}" FontWeight="SemiBold" Margin="0,12,0,0" />
+                    <DockPanel Margin="0,4,0,0">
+                        <TextBlock x:Name="EdgeMarginText" DockPanel.Dock="Right" Width="52"
+                                   TextAlignment="Right" VerticalAlignment="Center" />
+                        <Slider x:Name="EdgeMarginSlider" Minimum="0" Maximum="48" TickFrequency="1"
+                                IsSnapToTickEnabled="True" />
+                    </DockPanel>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Settings_TabBehaviour}">
+                <StackPanel Margin="16">
+                    <CheckBox x:Name="AutoHideBox" Margin="0,4"
+                              Content="{loc:Loc Settings_AutoHide}" />
+                    <CheckBox x:Name="DoubleClickBox" Margin="0,8"
+                              Content="{loc:Loc Settings_DoubleClick}" />
+
+                    <TextBlock Text="{loc:Loc Settings_MinSize}"
+                               FontWeight="SemiBold" Margin="0,16,0,0" TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                        <TextBlock Text="{loc:Loc Settings_Width}" VerticalAlignment="Center" Width="70" />
+                        <TextBox x:Name="MinWidthBox" Width="80" Padding="4" />
+                        <TextBlock Text="px" VerticalAlignment="Center" Margin="6,0,20,0" />
+                        <TextBlock Text="{loc:Loc Settings_Height}" VerticalAlignment="Center" Width="70" />
+                        <TextBox x:Name="MinHeightBox" Width="80" Padding="4" />
+                        <TextBlock Text="px" VerticalAlignment="Center" Margin="6,0,0,0" />
+                    </StackPanel>
+
+                    <TextBlock Text="{loc:Loc Settings_ClipboardSection}" FontWeight="SemiBold" Margin="0,24,0,0" />
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock Text="{loc:Loc Settings_Format}" VerticalAlignment="Center" Width="70" />
+                        <ComboBox x:Name="ClipboardFormatBox" Width="120">
+                            <ComboBoxItem Content="PNG" />
+                            <ComboBoxItem Content="JPG" />
+                            <ComboBoxItem Content="WebP" />
+                        </ComboBox>
+                        <TextBlock Text="{loc:Loc Settings_JpegQuality}" VerticalAlignment="Center" Margin="20,0,8,0" />
+                        <TextBox x:Name="JpegQualityBox" Width="60" Padding="4" />
+                    </StackPanel>
+                    <CheckBox x:Name="AskFileNameBox" Margin="0,10"
+                              Content="{loc:Loc Settings_AskFileName}" />
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Settings_TabShortcuts}">
+                <Grid Margin="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <ListBox x:Name="ShortcutList" DisplayMemberPath="Display" />
+
+                    <StackPanel Grid.Column="1" Margin="12,0,0,0" Width="170">
+                        <Button Content="{loc:Loc Settings_AddApplication}" Margin="0,0,0,6" Padding="8,5" Click="OnAddApplication" />
+                        <Button Content="{loc:Loc Settings_AddFolder}" Margin="0,0,0,6" Padding="8,5" Click="OnAddFolder" />
+                        <Button Content="{loc:Loc Settings_AddFile}" Margin="0,0,0,6" Padding="8,5" Click="OnAddFile" />
+                        <Button Content="{loc:Loc Settings_AddAction}" Margin="0,0,0,6" Padding="8,5" Click="OnAddAction" />
+                        <Button Content="{loc:Loc Settings_AddSeparator}" Margin="0,0,0,16" Padding="8,5" Click="OnAddSeparator" />
+                        <Button Content="{loc:Loc Settings_Edit}" Margin="0,0,0,6" Padding="8,5" Click="OnEdit" />
+                        <Button Content="{loc:Loc Settings_Rename}" Margin="0,0,0,6" Padding="8,5" Click="OnRename" />
+                        <Button Content="{loc:Loc Settings_ChangeIcon}" Margin="0,0,0,16" Padding="8,5" Click="OnChangeIcon" />
+                        <Button Content="{loc:Loc Settings_MoveUp}" Margin="0,0,0,6" Padding="8,5" Click="OnMoveUp" />
+                        <Button Content="{loc:Loc Settings_MoveDown}" Margin="0,0,0,16" Padding="8,5" Click="OnMoveDown" />
+                        <Button Content="{loc:Loc Settings_Delete}" Padding="8,5" Click="OnDelete" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc Settings_TabGeneral}">
+                <StackPanel Margin="16">
+                    <CheckBox x:Name="StartupBox" Margin="0,4" Content="{loc:Loc Settings_Startup}" />
+                    <CheckBox x:Name="UpdateBox" Margin="0,8"
+                              Content="{loc:Loc Settings_CheckUpdates}" />
+                    <CheckBox x:Name="VerboseBox" Margin="0,8" Content="{loc:Loc Settings_Verbose}" />
+
+                    <TextBlock Text="{loc:Loc Settings_PrivacyNote}"
+                               TextWrapping="Wrap" Opacity="0.7" Margin="0,12,0,0" />
+
+                    <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                        <Button Content="{loc:Loc Settings_OpenLogs}" Padding="10,5" Click="OnOpenLogs" />
+                        <Button Content="{loc:Loc Settings_CopyDiagnostics}" Padding="10,5" Margin="8,0,0,0" Click="OnCopyDiagnostics" />
+                    </StackPanel>
+
+                    <TextBlock x:Name="ConfigPathText" TextWrapping="Wrap" Opacity="0.7" Margin="0,16,0,0" />
+                </StackPanel>
+            </TabItem>
+
+        </TabControl>
+    </DockPanel>
+</Window>

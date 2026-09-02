@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" /></xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" /></xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Action_ClearHistory" xml:space="preserve">
+    <value>Vider l'historique</value>
+  </data>
+  <data name="Action_FileNamePrompt" xml:space="preserve">
+    <value>Enregistrer l'image sous :</value>
+  </data>
+  <data name="Action_FileNameTitle" xml:space="preserve">
+    <value>Nom du fichier</value>
+  </data>
+  <data name="Action_NoRecentFolder" xml:space="preserve">
+    <value>Aucun dossier récent</value>
+  </data>
+  <data name="Action_PasteImage" xml:space="preserve">
+    <value>Coller l'image du presse-papiers</value>
+  </data>
+  <data name="Action_RecentFolders" xml:space="preserve">
+    <value>Dossiers récents</value>
+  </data>
+  <data name="Bar_DropCopyTo" xml:space="preserve">
+    <value>Copier vers : {0}</value>
+  </data>
+  <data name="Bar_DropMoveTo" xml:space="preserve">
+    <value>Déplacer vers : {0}</value>
+  </data>
+  <data name="Bar_DropOpenWith" xml:space="preserve">
+    <value>Ouvrir avec : {0}</value>
+  </data>
+  <data name="Bar_FileTooltip" xml:space="preserve">
+    <value>{0}
+Ouvrir avec l'application associée</value>
+  </data>
+  <data name="Bar_FolderTooltip" xml:space="preserve">
+    <value>{0}
+Clic : ouvrir ici  ·  Molette : nouvel onglet  ·  Ctrl+clic : nouvelle fenêtre</value>
+  </data>
+  <data name="Bar_GripTooltip" xml:space="preserve">
+    <value>Glisser pour déplacer la barre</value>
+  </data>
+  <data name="Bar_NewName" xml:space="preserve">
+    <value>Nouveau nom :</value>
+  </data>
+  <data name="Bar_Rename" xml:space="preserve">
+    <value>Renommer</value>
+  </data>
+  <data name="Common_AllFiles" xml:space="preserve">
+    <value>Tous les fichiers|*.*</value>
+  </data>
+  <data name="Common_Browse" xml:space="preserve">
+    <value>Parcourir...</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Common_Close" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="Common_Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="Common_Separator" xml:space="preserve">
+    <value>Séparateur</value>
+  </data>
+  <data name="Dialog_ChooseApplication" xml:space="preserve">
+    <value>Choisir une application</value>
+  </data>
+  <data name="Dialog_ChooseFile" xml:space="preserve">
+    <value>Choisir un fichier</value>
+  </data>
+  <data name="Dialog_ChooseFolder" xml:space="preserve">
+    <value>Choisir un dossier</value>
+  </data>
+  <data name="Dialog_ChooseIcon" xml:space="preserve">
+    <value>Choisir une icône</value>
+  </data>
+  <data name="Dialog_FilterApps" xml:space="preserve">
+    <value>Applications|*.exe</value>
+  </data>
+  <data name="Dialog_FilterAppsAndLinks" xml:space="preserve">
+    <value>Applications et raccourcis|*.exe;*.lnk</value>
+  </data>
+  <data name="Dialog_FilterImages" xml:space="preserve">
+    <value>Images et icônes|*.png;*.ico;*.jpg;*.jpeg;*.bmp;*.exe;*.dll</value>
+  </data>
+  <data name="Editor_AcceptDrops" xml:space="preserve">
+    <value>Accepter les fichiers et dossiers déposés sur ce bouton (passés en argument)</value>
+  </data>
+  <data name="Editor_Arguments" xml:space="preserve">
+    <value>Arguments (optionnel)</value>
+  </data>
+  <data name="Editor_ArgumentsHint" xml:space="preserve">
+    <value>Le jeton {currentFolder} est remplacé par le dossier affiché par l'Explorateur. Exemple : cursor.exe "{currentFolder}"</value>
+  </data>
+  <data name="Editor_MissingFile" xml:space="preserve">
+    <value>Ce fichier est introuvable. L'enregistrer quand même ?</value>
+  </data>
+  <data name="Editor_MissingFolder" xml:space="preserve">
+    <value>Ce dossier est introuvable. L'enregistrer quand même ?</value>
+  </data>
+  <data name="Editor_Name" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="Editor_TargetApplication" xml:space="preserve">
+    <value>Chemin de l'exécutable</value>
+  </data>
+  <data name="Editor_TargetFile" xml:space="preserve">
+    <value>Fichier</value>
+  </data>
+  <data name="Editor_TargetFolder" xml:space="preserve">
+    <value>Dossier</value>
+  </data>
+  <data name="Editor_TitleAction" xml:space="preserve">
+    <value>Modifier l'action</value>
+  </data>
+  <data name="Editor_TitleApplication" xml:space="preserve">
+    <value>Modifier le raccourci</value>
+  </data>
+  <data name="Editor_TitleFile" xml:space="preserve">
+    <value>Modifier le fichier</value>
+  </data>
+  <data name="Editor_TitleFolder" xml:space="preserve">
+    <value>Modifier le dossier</value>
+  </data>
+  <data name="Editor_WorkCurrent" xml:space="preserve">
+    <value>Dossier affiché par l'Explorateur</value>
+  </data>
+  <data name="Editor_WorkCustom" xml:space="preserve">
+    <value>Personnalisé :</value>
+  </data>
+  <data name="Editor_WorkDefault" xml:space="preserve">
+    <value>Par défaut (dossier de l'application)</value>
+  </data>
+  <data name="Editor_WorkingDirectory" xml:space="preserve">
+    <value>Dossier de travail</value>
+  </data>
+  <data name="Menu_Add" xml:space="preserve">
+    <value>Ajouter</value>
+  </data>
+  <data name="Menu_AddAction" xml:space="preserve">
+    <value>Action Xbar</value>
+  </data>
+  <data name="Menu_AutoHide" xml:space="preserve">
+    <value>Masquage automatique</value>
+  </data>
+  <data name="Menu_ChangeIcon" xml:space="preserve">
+    <value>Changer l'icône...</value>
+  </data>
+  <data name="Menu_DefaultIcon" xml:space="preserve">
+    <value>Icône par défaut</value>
+  </data>
+  <data name="Menu_Delete" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="Menu_Edit" xml:space="preserve">
+    <value>Modifier...</value>
+  </data>
+  <data name="Menu_Open" xml:space="preserve">
+    <value>Ouvrir</value>
+  </data>
+  <data name="Menu_OpenLogs" xml:space="preserve">
+    <value>Ouvrir les logs</value>
+  </data>
+  <data name="Menu_OpenNewTab" xml:space="preserve">
+    <value>Ouvrir dans un nouvel onglet</value>
+  </data>
+  <data name="Menu_OpenNewWindow" xml:space="preserve">
+    <value>Ouvrir dans une nouvelle fenêtre</value>
+  </data>
+  <data name="Menu_Quit" xml:space="preserve">
+    <value>Quitter Xbar</value>
+  </data>
+  <data name="Menu_Reload" xml:space="preserve">
+    <value>Recharger Xbar</value>
+  </data>
+  <data name="Menu_Rename" xml:space="preserve">
+    <value>Renommer...</value>
+  </data>
+  <data name="Menu_SeparatorAfter" xml:space="preserve">
+    <value>Ajouter un séparateur après</value>
+  </data>
+  <data name="Menu_SeparatorBefore" xml:space="preserve">
+    <value>Ajouter un séparateur avant</value>
+  </data>
+  <data name="Menu_Settings" xml:space="preserve">
+    <value>Paramètres...</value>
+  </data>
+  <data name="Msg_Copied" xml:space="preserve">
+    <value>Copié vers {0}</value>
+  </data>
+  <data name="Msg_DropFailed" xml:space="preserve">
+    <value>Dépôt impossible</value>
+  </data>
+  <data name="Msg_Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="Msg_FileNotFound" xml:space="preserve">
+    <value>Fichier introuvable</value>
+  </data>
+  <data name="Msg_FolderNotFound" xml:space="preserve">
+    <value>Dossier introuvable</value>
+  </data>
+  <data name="Msg_LaunchFailed" xml:space="preserve">
+    <value>Lancement impossible</value>
+  </data>
+  <data name="Msg_MenuUnavailable" xml:space="preserve">
+    <value>Menu indisponible</value>
+  </data>
+  <data name="Msg_Moved" xml:space="preserve">
+    <value>Déplacé vers {0}</value>
+  </data>
+  <data name="Msg_NoClipboardImage" xml:space="preserve">
+    <value>Aucune image dans le presse-papiers</value>
+  </data>
+  <data name="Msg_NoPath" xml:space="preserve">
+    <value>Chemin non défini</value>
+  </data>
+  <data name="Msg_OpenFailed" xml:space="preserve">
+    <value>Ouverture impossible</value>
+  </data>
+  <data name="Msg_SaveFailed" xml:space="preserve">
+    <value>Échec de l'enregistrement</value>
+  </data>
+  <data name="Msg_UnknownAction" xml:space="preserve">
+    <value>Action inconnue</value>
+  </data>
+  <data name="Msg_UnknownFolder" xml:space="preserve">
+    <value>Dossier Explorer inconnu</value>
+  </data>
+  <data name="Msg_UnsupportedDrop" xml:space="preserve">
+    <value>Type non pris en charge</value>
+  </data>
+  <data name="Msg_UpdateAvailable" xml:space="preserve">
+    <value>La version {0} est disponible.</value>
+  </data>
+  <data name="Settings_AddAction" xml:space="preserve">
+    <value>Ajouter une action...</value>
+  </data>
+  <data name="Settings_AddApplication" xml:space="preserve">
+    <value>Ajouter une application...</value>
+  </data>
+  <data name="Settings_AddFile" xml:space="preserve">
+    <value>Ajouter un fichier...</value>
+  </data>
+  <data name="Settings_AddFolder" xml:space="preserve">
+    <value>Ajouter un dossier...</value>
+  </data>
+  <data name="Settings_AddSeparator" xml:space="preserve">
+    <value>Ajouter un séparateur</value>
+  </data>
+  <data name="Settings_Anchor" xml:space="preserve">
+    <value>Position verticale</value>
+  </data>
+  <data name="Settings_AnchorBottom" xml:space="preserve">
+    <value>Bas</value>
+  </data>
+  <data name="Settings_AnchorCenter" xml:space="preserve">
+    <value>Centre</value>
+  </data>
+  <data name="Settings_AnchorTop" xml:space="preserve">
+    <value>Haut</value>
+  </data>
+  <data name="Settings_AskFileName" xml:space="preserve">
+    <value>Demander le nom du fichier avant l'enregistrement</value>
+  </data>
+  <data name="Settings_AutoHide" xml:space="preserve">
+    <value>Masquage automatique (la barre se réduit tant que la souris ne la survole pas)</value>
+  </data>
+  <data name="Settings_AvoidScrollbar" xml:space="preserve">
+    <value>Ne jamais recouvrir la barre de défilement (élargit la marge si besoin)</value>
+  </data>
+  <data name="Settings_ButtonSize" xml:space="preserve">
+    <value>Taille des boutons</value>
+  </data>
+  <data name="Settings_ChangeIcon" xml:space="preserve">
+    <value>Changer l'icône...</value>
+  </data>
+  <data name="Settings_CheckUpdates" xml:space="preserve">
+    <value>Vérifier discrètement les nouvelles versions (GitHub Releases)</value>
+  </data>
+  <data name="Settings_ClipboardSection" xml:space="preserve">
+    <value>Action « Coller l'image du presse-papiers »</value>
+  </data>
+  <data name="Settings_ConfigPath" xml:space="preserve">
+    <value>Configuration : {0}</value>
+  </data>
+  <data name="Settings_CopyDiagnostics" xml:space="preserve">
+    <value>Copier un diagnostic</value>
+  </data>
+  <data name="Settings_Delete" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="Settings_DiagnosticsCopied" xml:space="preserve">
+    <value>Diagnostic copié dans le presse-papiers.</value>
+  </data>
+  <data name="Settings_DoubleClick" xml:space="preserve">
+    <value>Double-clic dans le vide de la vue des fichiers = remonter au dossier parent</value>
+  </data>
+  <data name="Settings_EdgeMargin" xml:space="preserve">
+    <value>Marge par rapport au bord droit (px)</value>
+  </data>
+  <data name="Settings_Edit" xml:space="preserve">
+    <value>Modifier...</value>
+  </data>
+  <data name="Settings_Format" xml:space="preserve">
+    <value>Format</value>
+  </data>
+  <data name="Settings_Height" xml:space="preserve">
+    <value>Hauteur</value>
+  </data>
+  <data name="Settings_JpegQuality" xml:space="preserve">
+    <value>Qualité JPG</value>
+  </data>
+  <data name="Settings_KindAction" xml:space="preserve">
+    <value>[Action]</value>
+  </data>
+  <data name="Settings_KindApp" xml:space="preserve">
+    <value>[App]</value>
+  </data>
+  <data name="Settings_KindFile" xml:space="preserve">
+    <value>[Fichier]</value>
+  </data>
+  <data name="Settings_KindFolder" xml:space="preserve">
+    <value>[Dossier]</value>
+  </data>
+  <data name="Settings_Labels" xml:space="preserve">
+    <value>Contenu des boutons</value>
+  </data>
+  <data name="Settings_LabelsIconAndText" xml:space="preserve">
+    <value>Icône + texte</value>
+  </data>
+  <data name="Settings_LabelsIconsOnly" xml:space="preserve">
+    <value>Icônes uniquement</value>
+  </data>
+  <data name="Settings_LabelsOnBarHover" xml:space="preserve">
+    <value>Icônes, texte au survol</value>
+  </data>
+  <data name="Settings_LabelsOnItemHover" xml:space="preserve">
+    <value>Icônes, nom au survol du bouton</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Langue</value>
+  </data>
+  <data name="Settings_LanguageAuto" xml:space="preserve">
+    <value>Automatique (langue de Windows)</value>
+  </data>
+  <data name="Settings_LanguageEnglish" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Settings_LanguageFrench" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="Settings_MinSize" xml:space="preserve">
+    <value>Masquer la barre quand la fenêtre Explorer est plus petite que :</value>
+  </data>
+  <data name="Settings_MoveDown" xml:space="preserve">
+    <value>Descendre</value>
+  </data>
+  <data name="Settings_MoveUp" xml:space="preserve">
+    <value>Monter</value>
+  </data>
+  <data name="Settings_Opacity" xml:space="preserve">
+    <value>Opacité</value>
+  </data>
+  <data name="Settings_OpenLogs" xml:space="preserve">
+    <value>Ouvrir le dossier des logs</value>
+  </data>
+  <data name="Settings_PortableSuffix" xml:space="preserve">
+    <value>  (mode portable)</value>
+  </data>
+  <data name="Settings_PrivacyNote" xml:space="preserve">
+    <value>Aucune télémétrie, aucun envoi automatique. Les journaux restent sur cet ordinateur.</value>
+  </data>
+  <data name="Settings_RecentLog" xml:space="preserve">
+    <value>--- Journal récent ---</value>
+  </data>
+  <data name="Settings_Rename" xml:space="preserve">
+    <value>Renommer...</value>
+  </data>
+  <data name="Settings_RestartHint" xml:space="preserve">
+    <value>La fenêtre des paramètres se rouvre pour appliquer la langue.</value>
+  </data>
+  <data name="Settings_Startup" xml:space="preserve">
+    <value>Démarrer Xbar avec Windows</value>
+  </data>
+  <data name="Settings_TabAppearance" xml:space="preserve">
+    <value>Apparence</value>
+  </data>
+  <data name="Settings_TabBehaviour" xml:space="preserve">
+    <value>Comportement</value>
+  </data>
+  <data name="Settings_TabGeneral" xml:space="preserve">
+    <value>Général</value>
+  </data>
+  <data name="Settings_TabShortcuts" xml:space="preserve">
+    <value>Raccourcis</value>
+  </data>
+  <data name="Settings_Theme" xml:space="preserve">
+    <value>Thème</value>
+  </data>
+  <data name="Settings_ThemeAuto" xml:space="preserve">
+    <value>Automatique (thème Windows)</value>
+  </data>
+  <data name="Settings_ThemeDark" xml:space="preserve">
+    <value>Sombre</value>
+  </data>
+  <data name="Settings_ThemeLight" xml:space="preserve">
+    <value>Clair</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Xbar — Paramètres</value>
+  </data>
+  <data name="Settings_UnsupportedType" xml:space="preserve">
+    <value>Ce type de fichier n'est pas pris en charge.</value>
+  </data>
+  <data name="Settings_Verbose" xml:space="preserve">
+    <value>Journalisation détaillée</value>
+  </data>
+  <data name="Settings_Width" xml:space="preserve">
+    <value>Largeur</value>
+  </data>
+  <data name="Tray_ShowBar" xml:space="preserve">
+    <value>Afficher la barre</value>
+  </data>
+  <data name="Tray_Startup" xml:space="preserve">
+    <value>Démarrer avec Windows</value>
+  </data>
+</root>
