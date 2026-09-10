@@ -166,7 +166,31 @@ public static class ExplorerNavigator
         finally { Release(browser); }
     }
 
-    private static string? GetActiveFolder(IShellBrowser browser)
+    private static string? GetActiveFolder(IShellBrowser browser) =>
+        WithCurrentPidl(browser, pidl =>
+        {
+            var sb = new StringBuilder(1024);
+            if (!ShellNative.SHGetPathFromIDList(pidl, sb)) return null;
+            var path = sb.ToString();
+            return Directory.Exists(path) ? path : null;
+        });
+
+    /// <summary>
+    /// Nom d'analyse absolu de l'emplacement affiche : un chemin de disque, ou "::{CLSID}" pour
+    /// un dossier virtuel. C'est le seul identifiant stable d'une vue sans chemin.
+    /// </summary>
+    private static string? GetActiveParsingName(IShellBrowser browser) =>
+        WithCurrentPidl(browser, pidl =>
+        {
+            if (ShellNative.SHGetNameFromIDList(pidl, ShellNative.SIGDN_DESKTOPABSOLUTEPARSING,
+                    out var buffer) != 0 || buffer == IntPtr.Zero)
+                return null;
+            try { return Marshal.PtrToStringUni(buffer); }
+            finally { Marshal.FreeCoTaskMem(buffer); }
+        });
+
+    /// <summary>Applique une lecture au PIDL du dossier affiche par l'onglet actif.</summary>
+    private static string? WithCurrentPidl(IShellBrowser browser, Func<IntPtr, string?> read)
     {
         object? viewObj = null;
         object? folderObj = null;
@@ -180,13 +204,7 @@ public static class ExplorerNavigator
                 return null;
 
             if (persist.GetCurFolder(out var pidl) != 0 || pidl == IntPtr.Zero) return null;
-            try
-            {
-                var sb = new StringBuilder(1024);
-                if (!ShellNative.SHGetPathFromIDList(pidl, sb)) return null;
-                var path = sb.ToString();
-                return Directory.Exists(path) ? path : null;
-            }
+            try { return read(pidl); }
             finally { ShellNative.ILFree(pidl); }
         }
         catch (Exception ex)
@@ -199,6 +217,25 @@ public static class ExplorerNavigator
             Release(folderObj);
             Release(viewObj);
         }
+    }
+
+    /// <summary>Galerie de Windows 11 : elle dessine sa reglette chronologique au bord droit.</summary>
+    private const string GalleryClsid = "::{E88865EA-0E1C-4E20-9AA6-EDCD0212C87C}";
+
+    /// <summary>
+    /// Vrai si l'onglet actif affiche la Galerie. Celle-ci occupe une bande le long de son bord
+    /// droit (reglette chronologique) que la barre doit laisser libre.
+    /// </summary>
+    public static bool IsGalleryView(IntPtr hwnd)
+    {
+        var browser = GetActiveBrowser(hwnd);
+        if (browser is null) return false;
+        try
+        {
+            return GetActiveParsingName(browser)?
+                .EndsWith(GalleryClsid, StringComparison.OrdinalIgnoreCase) == true;
+        }
+        finally { Release(browser); }
     }
 
     /// <summary>Navigation de l'onglet ACTIF vers un dossier, via IShellBrowser::BrowseObject.</summary>

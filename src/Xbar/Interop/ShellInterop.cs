@@ -102,6 +102,12 @@ public static class ShellNative
     [DllImport("shell32.dll")]
     public static extern void ILFree(IntPtr pidl);
 
+    /// <summary>SIGDN_DESKTOPABSOLUTEPARSING : chemin complet, ou "::{CLSID}" si aucun n'existe.</summary>
+    public const uint SIGDN_DESKTOPABSOLUTEPARSING = 0x80028000;
+
+    [DllImport("shell32.dll")]
+    public static extern int SHGetNameFromIDList(IntPtr pidl, uint sigdnName, out IntPtr name);
+
     [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
     public static extern bool SHGetPathFromIDList(IntPtr pidl,
         [MarshalAs(UnmanagedType.LPWStr)] System.Text.StringBuilder pszPath);

@@ -61,6 +61,16 @@ public partial class OverlayWindow : Window
 
     /// <summary>La vue des fichiers affiche-t-elle une barre de defilement ? (verifie en differe)</summary>
     private bool _viewScrolls = true;
+
+    /// <summary>
+    /// Largeur laissee libre au bord droit par une vue qui y dessine quelque chose. La Galerie de
+    /// Windows 11 y place sa reglette chronologique : mesuree a 51 DIP (etiquette d'annee de 31 px
+    /// plus sa marge), soit trois fois une barre de defilement.
+    /// </summary>
+    private const double GalleryRailDip = 51;
+
+    /// <summary>Bande reservee au bord droit par la vue courante, en DIP. 0 hors Galerie.</summary>
+    private double _reservedRightDip;
     private readonly DispatcherTimer _scrollCheckTimer;
 
     /// <summary>Position verticale en cours de glissement, avant enregistrement.</summary>
@@ -441,7 +451,9 @@ public partial class OverlayWindow : Window
         var scrollbar = settings.AvoidScrollbar && _viewScrolls
             ? NativeMethods.GetSystemMetricsForDpi(NativeMethods.SM_CXVSCROLL, dpi)
             : 0;
-        var edgeOffset = Math.Max((int)Math.Round(settings.EdgeMargin * scale), scrollbar);
+        var reserved = (int)Math.Round(_reservedRightDip * scale);
+        var edgeOffset = Math.Max((int)Math.Round(settings.EdgeMargin * scale),
+                                  Math.Max(scrollbar, reserved));
 
         var x = origin.X + client.Width - edgeOffset - widthPx;
         var margin = (int)Math.Round(12 * scale);
@@ -649,7 +661,8 @@ public partial class OverlayWindow : Window
 
     private void ScheduleScrollbarCheck()
     {
-        if (!SettingsStore.Current.AvoidScrollbar) return;
+        // Sans le reglage "eviter la barre de defilement", il reste la reglette de la Galerie a
+        // mesurer : la verification n'est donc plus conditionnee a ce reglage.
         _scrollCheckTimer.Stop();
         _scrollCheckTimer.Start();
     }
@@ -657,20 +670,30 @@ public partial class OverlayWindow : Window
     private async Task CheckScrollbarAsync()
     {
         var hwnd = ExplorerHwnd;
+        var avoidScrollbar = SettingsStore.Current.AvoidScrollbar;
+
         bool scrolls;
+        double reserved;
         try
         {
-            scrolls = await Task.Run(() => ExplorerWindows.ViewHasVerticalScrollbar(hwnd)).ConfigureAwait(true);
+            // UI Automation supporte le pool de threads ; l'enumeration ShellWindows non. Depuis
+            // un thread MTA elle echoue en silence et rend toujours "pas la Galerie" : ce test
+            // doit rester sur le thread d'interface, en STA.
+            scrolls = avoidScrollbar &&
+                await Task.Run(() => ExplorerWindows.ViewHasVerticalScrollbar(hwnd)).ConfigureAwait(true);
+            reserved = ExplorerNavigator.IsGalleryView(hwnd) ? GalleryRailDip : 0;
         }
         catch (Exception ex)
         {
-            Log.Debug($"Verification de la barre de defilement : {ex.Message}");
+            Log.Debug($"Verification du bord droit de la vue : {ex.Message}");
             return;
         }
 
-        if (scrolls == _viewScrolls) return;
+        if (scrolls == _viewScrolls && Math.Abs(reserved - _reservedRightDip) < 0.5) return;
+
         _viewScrolls = scrolls;
-        Log.Debug($"Barre de defilement {(scrolls ? "presente" : "absente")} pour {hwnd:X}");
+        _reservedRightDip = reserved;
+        Log.Debug($"Bord droit pour {hwnd:X} : defilement={scrolls} reserve={reserved:0} DIP");
         UpdatePlacement();
     }
 
