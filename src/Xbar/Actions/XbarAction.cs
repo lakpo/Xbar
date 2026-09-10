@@ -41,7 +41,7 @@ public abstract class XbarAction
 public static class ActionRegistry
 {
     private static readonly List<XbarAction> Actions =
-        [new PasteClipboardImageAction(), new RecentFoldersAction()];
+        [new PasteClipboardImageAction(), new RecentFoldersAction(), new DuplicateTabAction()];
 
     public static IReadOnlyList<XbarAction> All => Actions;
 

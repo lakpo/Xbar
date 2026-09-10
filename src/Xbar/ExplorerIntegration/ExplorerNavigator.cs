@@ -297,14 +297,22 @@ public static class ExplorerNavigator
     /// Ouvre le dossier dans un nouvel onglet de la fenetre indiquee.
     /// Windows n'expose aucune API publique pour les onglets de l'Explorateur : l'onglet est
     /// cree avec Ctrl+T (seul mecanisme disponible), puis la navigation se fait par BrowseObject,
-    /// qui s'applique a l'onglet nouvellement actif. Repli sur une nouvelle fenetre en cas d'echec.
+    /// qui s'applique a l'onglet nouvellement actif.
+    ///
+    /// La creation est constatee en comptant les fenetres ShellTabWindowClass, et non en
+    /// surveillant le dossier affiche : un onglet neuf s'ouvre sur un dossier virtuel (Accueil,
+    /// Ce PC) dont le chemin vaut null, indiscernable d'un depart lui aussi virtuel -- la barre
+    /// ouvrait alors une fenetre EN PLUS de l'onglet deja cree.
+    ///
+    /// Repli sur une nouvelle fenetre uniquement si aucun onglet n'a ete cree.
     /// </summary>
     public static async Task<bool> OpenInNewTabAsync(IntPtr hwnd, string path)
     {
+        var before = GetTabWindows(hwnd);
+        var tabCreated = false;
+
         try
         {
-            var before = GetCurrentFolder(hwnd);
-
             NativeMethods.SetForegroundWindow(hwnd);
             await Task.Delay(80);
             if (NativeMethods.GetForegroundWindow() != hwnd)
@@ -315,23 +323,59 @@ public static class ExplorerNavigator
 
             NativeMethods.SendCtrlKey(NativeMethods.VK_T);
 
-            // On attend que l'onglet actif change (le nouvel onglet s'ouvre sur Accueil).
-            for (int i = 0; i < 20; i++)
+            for (var i = 0; i < 30; i++)
             {
                 await Task.Delay(50);
-                var current = GetCurrentFolder(hwnd);
-                if (!string.Equals(current, before, StringComparison.OrdinalIgnoreCase))
-                    return NavigateSameTab(hwnd, path);
-            }
 
-            Log.Debug("Nouvel onglet non detecte, ouverture d'une nouvelle fenetre");
-            return OpenInNewWindow(path);
+                var now = GetTabWindows(hwnd);
+                if (now.Count <= before.Count) continue;
+                tabCreated = true;
+
+                // On attend que le nouvel onglet soit aussi celui affiche (premier dans l'ordre
+                // Z) : naviguer trop tot enverrait l'ancien onglet sur le dossier demande.
+                if (before.Contains(now[0])) continue;
+
+                return NavigateSameTab(hwnd, path);
+            }
         }
         catch (Exception ex)
         {
             Log.Error("Ouverture d'un nouvel onglet", ex);
-            return OpenInNewWindow(path);
         }
+
+        // Un onglet a bien ete cree : ouvrir en plus une fenetre donnerait deux ouvertures pour
+        // un seul clic. Ctrl+T rend toujours le nouvel onglet actif du point de vue de
+        // l'Explorateur ; si l'ordre Z ne l'a pas encore reflete, c'est notre indicateur qui
+        // est en retard, pas l'onglet. On tente donc la navigation plutot que de renoncer.
+        if (tabCreated || GetTabWindows(hwnd).Count > before.Count)
+        {
+            Log.Warn("Nouvel onglet non confirme par l'ordre Z : navigation tentee malgre tout");
+            return NavigateSameTab(hwnd, path);
+        }
+
+        Log.Debug("Nouvel onglet non detecte, ouverture d'une nouvelle fenetre");
+        return OpenInNewWindow(path);
+    }
+
+    /// <summary>
+    /// HWND des onglets de la fenetre, dans l'ordre Z : le premier est l'onglet affiche.
+    /// Liste vide sur un Explorateur sans onglets.
+    /// </summary>
+    private static List<IntPtr> GetTabWindows(IntPtr hwnd)
+    {
+        var tabs = new List<IntPtr>();
+        if (hwnd == IntPtr.Zero) return tabs;
+
+        for (var child = NativeMethods.GetWindow(hwnd, NativeMethods.GW_CHILD);
+             child != IntPtr.Zero;
+             child = NativeMethods.GetWindow(child, NativeMethods.GW_HWNDNEXT))
+        {
+            if (NativeMethods.GetWindowClassName(child)
+                    .Equals("ShellTabWindowClass", StringComparison.OrdinalIgnoreCase))
+                tabs.Add(child);
+        }
+
+        return tabs;
     }
 
     /// <summary>

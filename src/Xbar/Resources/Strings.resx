@@ -474,4 +474,16 @@ Click: open here  ·  Middle-click: new tab  ·  Ctrl+click: new window</value>
   <data name="Tray_Startup" xml:space="preserve">
     <value>Start with Windows</value>
   </data>
+  <data name="Action_DuplicateTab" xml:space="preserve">
+    <value>Duplicate tab</value>
+  </data>
+  <data name="Msg_DuplicateTabDone" xml:space="preserve">
+    <value>Tab duplicated</value>
+  </data>
+  <data name="Msg_DuplicateTabNoFolder" xml:space="preserve">
+    <value>This tab shows no folder to duplicate</value>
+  </data>
+  <data name="Msg_DuplicateTabFailed" xml:space="preserve">
+    <value>Could not duplicate this tab</value>
+  </data>
 </root>
