@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Xbar.Core;
 using Xbar.Shortcuts;
+using Xbar.Interop;
 
 namespace Xbar.Icons;
 
@@ -42,6 +43,7 @@ public static class IconService
         return item.Kind switch
         {
             ShortcutKind.Folder => GetShellIcon(item.Target, true, desiredPixelSize),
+            ShortcutKind.ShellFolder => GetShellFolderIcon(item.Target, desiredPixelSize),
             ShortcutKind.Application or ShortcutKind.File =>
                 GetShellIcon(item.Target, false, desiredPixelSize),
             _ => null
@@ -110,6 +112,50 @@ public static class IconService
         lock (Gate) if (Cache.TryGetValue(key, out var cached)) return cached;
 
         var image = ExtractIcon(path, isDirectory, desiredPixelSize);
+        if (image is null) return null;
+
+        image.Freeze();
+        lock (Gate) Cache[key] = image;
+        return image;
+    }
+
+    /// <summary>
+    /// Icone d'un emplacement du Shell sans chemin de fichier (Ce PC, Reseau, Corbeille...).
+    /// SHGetFileInfo ne peut pas les designer par une chaine de chemin : on passe par leur PIDL.
+    /// </summary>
+    public static ImageSource? GetShellFolderIcon(string target, int desiredPixelSize = 32)
+    {
+        if (string.IsNullOrWhiteSpace(target)) return null;
+
+        var key = $"shellns:{target}|{desiredPixelSize}";
+        lock (Gate) if (Cache.TryGetValue(key, out var cached)) return cached;
+
+        var pidl = ShellLocations.Parse(target);
+        if (pidl == IntPtr.Zero) return null;
+
+        ImageSource? image = null;
+        try
+        {
+            var info = new SHFILEINFO();
+            if (SHGetFileInfo(pidl, 0, ref info, (uint)Marshal.SizeOf<SHFILEINFO>(),
+                    SHGFI_PIDL | SHGFI_SYSICONINDEX) == IntPtr.Zero)
+                return null;
+
+            foreach (var shil in CandidateLists(desiredPixelSize))
+            {
+                var candidate = GetFromImageList(shil, info.iIcon);
+                if (candidate is null) continue;
+
+                image ??= candidate;
+                if (ContentRatio(candidate) >= MinContentRatio)
+                {
+                    image = candidate;
+                    break;
+                }
+            }
+        }
+        finally { ShellNative.ILFree(pidl); }
+
         if (image is null) return null;
 
         image.Freeze();
@@ -250,6 +296,7 @@ public static class IconService
     private const uint SHGFI_LARGEICON = 0x000000000;
     private const uint SHGFI_SYSICONINDEX = 0x000004000;
     private const uint SHGFI_USEFILEATTRIBUTES = 0x000000010;
+    private const uint SHGFI_PIDL = 0x000000008;
 
     private const int SHIL_LARGE = 0;
     private const int SHIL_SMALL = 1;
@@ -271,6 +318,10 @@ public static class IconService
 
     [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
     private static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes,
+        ref SHFILEINFO psfi, uint cbFileInfo, uint uFlags);
+
+    [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+    private static extern IntPtr SHGetFileInfo(IntPtr pidl, uint dwFileAttributes,
         ref SHFILEINFO psfi, uint cbFileInfo, uint uFlags);
 
     [DllImport("shell32.dll")]

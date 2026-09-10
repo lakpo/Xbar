@@ -40,11 +40,20 @@ public partial class ShortcutEditorWindow : Window
             TargetLabel.Text = Strings.Get("Editor_TargetFile");
             ApplicationOptions.Visibility = Visibility.Collapsed;
         }
+        else if (_item.Kind == ShortcutKind.ShellFolder)
+        {
+            // L'adresse ("shell:MyComputerFolder") ne veut rien dire pour qui la lit et ne se
+            // choisit pas dans un explorateur de fichiers : seuls le nom et l'icone se modifient.
+            Title = Strings.Get("Editor_TitleShellLocation");
+            TargetLabel.Visibility = Visibility.Collapsed;
+            TargetRow.Visibility = Visibility.Collapsed;
+            ApplicationOptions.Visibility = Visibility.Collapsed;
+        }
         else if (_item.Kind == ShortcutKind.Action)
         {
             Title = Strings.Get("Editor_TitleAction");
             TargetLabel.Visibility = Visibility.Collapsed;
-            TargetBox.Visibility = Visibility.Collapsed;
+            TargetRow.Visibility = Visibility.Collapsed;
             ApplicationOptions.Visibility = Visibility.Collapsed;
         }
     }
@@ -82,7 +91,8 @@ public partial class ShortcutEditorWindow : Window
     {
         var target = TargetBox.Text.Trim();
 
-        if (_item.Kind != ShortcutKind.Action)
+        // Un emplacement du Shell n'a pas de chemin a verifier sur le disque.
+        if (_item.Kind is not (ShortcutKind.Action or ShortcutKind.ShellFolder))
         {
             var expanded = Environment.ExpandEnvironmentVariables(target);
             var exists = _item.Kind == ShortcutKind.Folder ? Directory.Exists(expanded) : File.Exists(expanded);

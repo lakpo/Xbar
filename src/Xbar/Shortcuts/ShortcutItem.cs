@@ -10,6 +10,11 @@ public enum ShortcutKind
     File,
     /// <summary>Navigation vers un dossier.</summary>
     Folder,
+    /// <summary>
+    /// Emplacement Windows sans chemin de fichier (Ce PC, Accueil, Réseau…) : la cible est une
+    /// adresse du Shell. Voir ShellLocations.
+    /// </summary>
+    ShellFolder,
     /// <summary>Séparateur visuel.</summary>
     Separator,
     /// <summary>Action intégrée à Xbar (voir Xbar.Actions).</summary>

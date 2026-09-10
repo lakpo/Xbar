@@ -486,4 +486,19 @@ Click: open here  ·  Middle-click: new tab  ·  Ctrl+click: new window</value>
   <data name="Msg_DuplicateTabFailed" xml:space="preserve">
     <value>Could not duplicate this tab</value>
   </data>
+  <data name="Menu_AddShellLocation" xml:space="preserve">
+    <value>Windows location</value>
+  </data>
+  <data name="Settings_AddShellLocation" xml:space="preserve">
+    <value>Add a Windows location</value>
+  </data>
+  <data name="Settings_KindShellLocation" xml:space="preserve">
+    <value>[Location]</value>
+  </data>
+  <data name="Msg_ShellLocationNotFound" xml:space="preserve">
+    <value>This Windows location is unavailable</value>
+  </data>
+  <data name="Editor_TitleShellLocation" xml:space="preserve">
+    <value>Edit Windows location</value>
+  </data>
 </root>

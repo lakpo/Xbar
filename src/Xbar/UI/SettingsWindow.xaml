@@ -125,6 +125,7 @@
                         <Button Content="{loc:Loc Settings_AddApplication}" Margin="0,0,0,6" Padding="8,5" Click="OnAddApplication" />
                         <Button Content="{loc:Loc Settings_AddFolder}" Margin="0,0,0,6" Padding="8,5" Click="OnAddFolder" />
                         <Button Content="{loc:Loc Settings_AddFile}" Margin="0,0,0,6" Padding="8,5" Click="OnAddFile" />
+                        <Button Content="{loc:Loc Settings_AddShellLocation}" Margin="0,0,0,6" Padding="8,5" Click="OnAddShellLocation" />
                         <Button Content="{loc:Loc Settings_AddAction}" Margin="0,0,0,6" Padding="8,5" Click="OnAddAction" />
                         <Button Content="{loc:Loc Settings_AddSeparator}" Margin="0,0,0,16" Padding="8,5" Click="OnAddSeparator" />
                         <Button Content="{loc:Loc Settings_Edit}" Margin="0,0,0,6" Padding="8,5" Click="OnEdit" />

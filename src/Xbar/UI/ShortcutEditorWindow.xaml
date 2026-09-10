@@ -15,7 +15,7 @@
         <TextBox x:Name="NameBox" Margin="0,4,0,12" Padding="4" />
 
         <TextBlock x:Name="TargetLabel" Text="{loc:Loc Editor_TargetApplication}" FontWeight="SemiBold" />
-        <Grid Margin="0,4,0,12">
+        <Grid x:Name="TargetRow" Margin="0,4,0,12">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />

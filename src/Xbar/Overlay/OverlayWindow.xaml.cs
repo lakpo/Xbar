@@ -1100,7 +1100,17 @@ public partial class OverlayWindow : Window
                 Name = a.Title
             })));
         }
+        var locations = new MenuItem { Header = Strings.Get("Menu_AddShellLocation") };
+        foreach (var address in ShellLocations.Known)
+        {
+            var target = address;
+            var name = ShellLocations.DisplayName(target);
+            if (name is null) continue; // emplacement absent de cette version de Windows
+            locations.Items.Add(Item(name, () => ShortcutStore.Add(ShellLocations.CreateShortcut(target))));
+        }
+
         add.Items.Add(actions);
+        if (locations.Items.Count > 0) add.Items.Add(locations);
         add.Items.Add(Item(Strings.Get("Common_Separator"), () => ShortcutStore.Add(new ShortcutItem
         {
             Kind = ShortcutKind.Separator,

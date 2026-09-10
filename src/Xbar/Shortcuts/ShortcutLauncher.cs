@@ -5,6 +5,7 @@ using Xbar.Actions;
 using Xbar.Core;
 using Xbar.ExplorerIntegration;
 using Xbar.Localization;
+using Xbar.Interop;
 
 namespace Xbar.Shortcuts;
 
@@ -34,6 +35,10 @@ public static class ShortcutLauncher
         {
             case ShortcutKind.Folder:
                 await ActivateFolderAsync(item, explorerHwnd, mode, feedback);
+                break;
+
+            case ShortcutKind.ShellFolder:
+                await ActivateShellFolderAsync(item, explorerHwnd, mode, feedback);
                 break;
 
             case ShortcutKind.Application:
@@ -71,6 +76,38 @@ public static class ShortcutLauncher
             feedback?.Invoke(Strings.Get("Msg_FolderNotFound"), false);
             return;
         }
+
+        switch (mode)
+        {
+            case ActivationMode.NewWindow:
+                ExplorerNavigator.OpenInNewWindow(target);
+                break;
+            case ActivationMode.NewTab:
+                await ExplorerNavigator.OpenInNewTabAsync(hwnd, target);
+                break;
+            default:
+                if (!ExplorerNavigator.NavigateSameTab(hwnd, target))
+                    ExplorerNavigator.OpenInNewWindow(target);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Emplacement Windows sans chemin de disque (Ce PC, Accueil, Reseau...). Directory.Exists
+    /// n'a aucun sens ici : la seule verification possible est que le Shell resolve l'adresse.
+    /// </summary>
+    private static async Task ActivateShellFolderAsync(ShortcutItem item, IntPtr hwnd,
+        ActivationMode mode, Action<string, bool>? feedback)
+    {
+        var target = item.Target;
+        var pidl = ShellLocations.Parse(target);
+        if (pidl == IntPtr.Zero)
+        {
+            Log.Warn($"Emplacement Windows introuvable : {target}");
+            feedback?.Invoke(Strings.Get("Msg_ShellLocationNotFound"), false);
+            return;
+        }
+        ShellNative.ILFree(pidl);
 
         switch (mode)
         {

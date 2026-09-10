@@ -25,6 +25,7 @@ public partial class SettingsWindow : Window
             ShortcutKind.Action => $"{Strings.Get("Settings_KindAction")} {(string.IsNullOrWhiteSpace(Item.Name) ? Item.ActionId : Item.Name)}",
             ShortcutKind.Folder => $"{Strings.Get("Settings_KindFolder")} {Item.Name}   {Item.Target}",
             ShortcutKind.File => $"{Strings.Get("Settings_KindFile")} {Item.Name}   {Item.Target}",
+            ShortcutKind.ShellFolder => $"{Strings.Get("Settings_KindShellLocation")} {Item.Name}",
             _ => $"{Strings.Get("Settings_KindApp")} {Item.Name}   {Item.Target}"
         };
     }
@@ -223,6 +224,25 @@ public partial class SettingsWindow : Window
             Name = System.IO.Path.GetFileName(dialog.FolderName.TrimEnd('\\')),
             Target = dialog.FolderName
         });
+    }
+
+    /// <summary>Emplacements Windows sans chemin de disque : Ce PC, Accueil, Reseau...</summary>
+    private void OnAddShellLocation(object sender, RoutedEventArgs e)
+    {
+        var menu = new ContextMenu { PlacementTarget = sender as UIElement, Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom };
+
+        foreach (var address in ShellLocations.Known)
+        {
+            var target = address;
+            var name = ShellLocations.DisplayName(target);
+            if (name is null) continue; // emplacement absent de cette version de Windows
+
+            var entry = new MenuItem { Header = name };
+            entry.Click += (_, _) => ShortcutStore.Add(ShellLocations.CreateShortcut(target));
+            menu.Items.Add(entry);
+        }
+
+        menu.IsOpen = true;
     }
 
     /// <summary>Propose la liste des actions integrees plutot que d'ajouter toujours la premiere.</summary>

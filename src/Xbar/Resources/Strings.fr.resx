@@ -486,4 +486,19 @@ Clic : ouvrir ici  ·  Molette : nouvel onglet  ·  Ctrl+clic : nouvelle fenêtr
   <data name="Msg_DuplicateTabFailed" xml:space="preserve">
     <value>Impossible de dupliquer cet onglet</value>
   </data>
+  <data name="Menu_AddShellLocation" xml:space="preserve">
+    <value>Emplacement Windows</value>
+  </data>
+  <data name="Settings_AddShellLocation" xml:space="preserve">
+    <value>Ajouter un emplacement Windows</value>
+  </data>
+  <data name="Settings_KindShellLocation" xml:space="preserve">
+    <value>[Emplacement]</value>
+  </data>
+  <data name="Msg_ShellLocationNotFound" xml:space="preserve">
+    <value>Cet emplacement Windows est indisponible</value>
+  </data>
+  <data name="Editor_TitleShellLocation" xml:space="preserve">
+    <value>Modifier l'emplacement Windows</value>
+  </data>
 </root>

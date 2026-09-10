@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Xbar.Core;
 using Xbar.Interop;
+using Xbar.Shortcuts;
 
 namespace Xbar.ExplorerIntegration;
 
@@ -280,7 +281,13 @@ public static class ExplorerNavigator
     {
         try
         {
-            Process.Start(new ProcessStartInfo("explorer.exe", $"\"{path.TrimEnd('\\')}\"")
+            // Une adresse Shell (shell:MyComputerFolder) n'est pas un chemin : la mettre entre
+            // guillemets ou lui retirer une barre finale la rendrait illisible pour explorer.exe.
+            var argument = ShellLocations.IsShellAddress(path)
+                ? path
+                : $"\"{path.TrimEnd('\\')}\"";
+
+            Process.Start(new ProcessStartInfo("explorer.exe", argument)
             {
                 UseShellExecute = true
             });
