@@ -156,9 +156,14 @@
                     <CheckBox x:Name="StartupBox" Margin="0,4" Content="{loc:Loc Settings_Startup}" />
                     <CheckBox x:Name="UpdateBox" Margin="0,8,0,4"
                               Content="{loc:Loc Settings_CheckUpdates}" />
-                    <CheckBox x:Name="AutoInstallBox" Margin="20,4,0,4"
-                              Content="{loc:Loc Settings_AutoInstallUpdates}"
-                              IsEnabled="{Binding IsChecked, ElementName=UpdateBox}" />
+                    <StackPanel Margin="20,4,0,4" IsEnabled="{Binding IsChecked, ElementName=UpdateBox}">
+                        <TextBlock Text="{loc:Loc Settings_UpdateMode}" />
+                        <ComboBox x:Name="UpdateModeBox" Margin="0,4,0,0" Width="420" HorizontalAlignment="Left">
+                            <ComboBoxItem Content="{loc:Loc Settings_UpdateModeAsk}" />
+                            <ComboBoxItem Content="{loc:Loc Settings_UpdateModeAutomatic}" />
+                            <ComboBoxItem Content="{loc:Loc Settings_UpdateModeNotify}" />
+                        </ComboBox>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="20,4,0,8">
                         <Button x:Name="CheckNowButton" Content="{loc:Loc Settings_CheckNow}"
                                 Padding="10,4" Click="OnCheckNow" />

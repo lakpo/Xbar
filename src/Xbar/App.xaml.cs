@@ -86,11 +86,7 @@ public partial class App : Application
         UpdateService.Notification += message =>
             Dispatcher.BeginInvoke(() => _tray?.ShowBalloon("Xbar", message));
 
-        if (afterUpdate)
-        {
-            _tray.ShowBalloon("Xbar", Strings.Format("Msg_Updated", AppInfo.Version));
-            Log.Info($"Xbar mis a jour en version {AppInfo.Version}");
-        }
+        AnnounceNewVersion();
         _ = Updater.CleanupAsync();
         _ = CheckForUpdatesAsync();
 
@@ -163,6 +159,24 @@ public partial class App : Application
         _updateTimer = new DispatcherTimer { Interval = UpdateService.CheckInterval };
         _updateTimer.Tick += async (_, _) => await UpdateService.RunAsync(manual: false);
         _updateTimer.Start();
+    }
+
+    /// <summary>
+    /// Premier lancement dans une version plus recente que la precedente : on l'annonce. Cela
+    /// couvre aussi une mise a jour installee sans redemarrage, qui prend effet maintenant.
+    /// </summary>
+    private void AnnounceNewVersion()
+    {
+        var previous = SettingsStore.Current.LastRunVersion;
+        if (previous == AppInfo.Version) return;
+
+        if (Version.TryParse(previous, out var before) && Version.TryParse(AppInfo.Version, out var now)
+            && now > before)
+        {
+            _tray?.ShowBalloon("Xbar", Strings.Format("Msg_Updated", AppInfo.Version));
+            Log.Info($"Xbar mis a jour : {previous} -> {AppInfo.Version}");
+        }
+        SettingsStore.UpdateQuietly(s => s.LastRunVersion = AppInfo.Version);
     }
 
     /// <summary>

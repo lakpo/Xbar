@@ -124,9 +124,11 @@ The colour also applies to the glyph of built-in actions.
 - notification area icon, settings window, right-click menu on the bar itself;
 - English and French interface, following the Windows language by default;
 - single instance — launching Xbar again opens the settings of the running one;
-- automatic updates through GitHub Releases: the new `Xbar.exe` is downloaded, checked against
-  the SHA-256 published by GitHub, swapped in next to the old one, and Xbar restarts. Checked 20 s
-  after launch then every 6 hours. Can be reduced to a simple notification, or switched off;
+- updates through GitHub Releases, checked 20 s after launch then every 6 hours. By default Xbar
+  **asks first**: *Install now* downloads the new `Xbar.exe`, checks it against the SHA-256
+  published by GitHub, swaps it in and restarts; *Later* asks again at the next launch. Other
+  choices: install silently, without restarting (the new version is used the next time Xbar
+  starts), or only notify. The check itself can be switched off;
 - no telemetry, no analytics, nothing sent anywhere; logs stay on your machine.
 
 ![The Xbar settings window](docs/xbar-settings.png)

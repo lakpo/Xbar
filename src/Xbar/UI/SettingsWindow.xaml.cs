@@ -86,7 +86,7 @@ public partial class SettingsWindow : Window
 
         StartupBox.IsChecked = StartupManager.IsEnabled();
         UpdateBox.IsChecked = s.CheckForUpdates;
-        AutoInstallBox.IsChecked = s.AutoInstallUpdates;
+        UpdateModeBox.SelectedIndex = (int)s.UpdateMode;
         VerboseBox.IsChecked = s.VerboseLogging;
 
         VersionText.Text = $"Xbar {AppInfo.Version}";
@@ -114,7 +114,7 @@ public partial class SettingsWindow : Window
 
         AvoidScrollbarBox.Click += (_, _) => Apply();
         ProfileSwitcherBox.Click += (_, _) => Apply();
-        AutoInstallBox.Click += (_, _) => Apply();
+        UpdateModeBox.SelectionChanged += (_, _) => Apply();
         ProfileBox.SelectionChanged += (_, _) =>
         {
             if (!_loading && ProfileBox.SelectedIndex >= 0) ShortcutStore.SwitchProfile(ProfileBox.SelectedIndex);
@@ -168,7 +168,7 @@ public partial class SettingsWindow : Window
             s.ClipboardAskFileName = AskFileNameBox.IsChecked == true;
 
             s.CheckForUpdates = UpdateBox.IsChecked == true;
-            s.AutoInstallUpdates = AutoInstallBox.IsChecked == true;
+            s.UpdateMode = (UpdateMode)Math.Max(0, UpdateModeBox.SelectedIndex);
             s.VerboseLogging = VerboseBox.IsChecked == true;
         });
 
@@ -388,6 +388,7 @@ public partial class SettingsWindow : Window
             UpdateOutcome.UpToDate => Strings.Format("Settings_UpdateUpToDate", AppInfo.Version),
             UpdateOutcome.Available => Strings.Get("Settings_UpdateAvailable"),
             UpdateOutcome.Installed => Strings.Get("Settings_UpdateInstalled"),
+            UpdateOutcome.Pending => Strings.Format("Settings_UpdatePending", UpdateService.PendingVersion),
             _ => Strings.Get("Settings_UpdateFailed")
         };
     }
@@ -402,7 +403,7 @@ public partial class SettingsWindow : Window
         sb.AppendLine($"Configuration: {AppPaths.Root}");
         sb.AppendLine($"Theme={s.Theme} Labels={s.Labels} ButtonSize={s.ButtonSize} Opacity={s.Opacity}");
         sb.AppendLine($"AutoHide={s.AutoHide} DoubleClick={s.DoubleClickGoUp} Shortcuts={ShortcutStore.Items.Count} Profile={ShortcutStore.Profile + 1}");
-        sb.AppendLine($"CheckForUpdates={s.CheckForUpdates} AutoInstallUpdates={s.AutoInstallUpdates}");
+        sb.AppendLine($"CheckForUpdates={s.CheckForUpdates} UpdateMode={s.UpdateMode}");
         sb.AppendLine();
         sb.AppendLine(Strings.Get("Settings_RecentLog"));
         sb.AppendLine(Log.GetRecent());

@@ -131,10 +131,12 @@ intégrées.
 - icône dans la zone de notification, fenêtre de paramètres, menu contextuel sur la barre ;
 - interface française et anglaise, suivant la langue de Windows par défaut ;
 - instance unique — relancer Xbar ouvre les paramètres de celle qui tourne ;
-- mise à jour automatique via GitHub Releases : le nouveau `Xbar.exe` est téléchargé, vérifié
-  contre l'empreinte SHA-256 publiée par GitHub, mis à la place de l'ancien, puis Xbar redémarre.
-  Recherche 20 s après le lancement puis toutes les 6 heures. Réductible à une simple
-  notification, ou désactivable ;
+- mises à jour via GitHub Releases, recherchées 20 s après le lancement puis toutes les 6 heures.
+  Par défaut Xbar **demande d'abord** : *Installer maintenant* télécharge le nouveau `Xbar.exe`,
+  le vérifie contre l'empreinte SHA-256 publiée par GitHub, le met en place et redémarre ;
+  *Plus tard* repose la question au prochain lancement. Autres choix : installer sans rien
+  demander ni redémarrer (la nouvelle version sert au prochain démarrage de Xbar), ou prévenir
+  seulement. La recherche elle-même est désactivable ;
 - aucune télémétrie, aucun analytics, aucun envoi ; les journaux restent sur votre machine.
 
 ![La fenêtre de paramètres de Xbar](docs/xbar-settings.png)

@@ -21,6 +21,17 @@ public enum LabelMode
 public enum ClipboardImageFormat { Png, Jpg, WebP }
 public enum BarAnchor { Top, Center, Bottom }
 
+/// <summary>Ce que fait Xbar d'une nouvelle version trouvee.</summary>
+public enum UpdateMode
+{
+    /// <summary>Demander a l'utilisateur ; s'il accepte, installer et redemarrer aussitot.</summary>
+    Ask,
+    /// <summary>Installer sans rien demander ni redemarrer : la version sert au prochain lancement.</summary>
+    Automatic,
+    /// <summary>Signaler seulement, sans rien installer.</summary>
+    NotifyOnly
+}
+
 /// <summary>Configuration globale, commune aux trois configurations de raccourcis.</summary>
 public sealed class AppSettings
 {
@@ -83,11 +94,13 @@ public sealed class AppSettings
     // --- Divers ---
     public bool CheckForUpdates { get; set; } = true;
 
+    public UpdateMode UpdateMode { get; set; } = UpdateMode.Ask;
+
     /// <summary>
-    /// Une nouvelle version trouvee est telechargee et installee d'elle-meme, puis Xbar
-    /// redemarre. Sans ce reglage, Xbar se contente de la signaler.
+    /// Version au dernier lancement. Un lancement dans une version plus recente annonce la mise
+    /// a jour, qu'elle ait ete installee avec ou sans redemarrage.
     /// </summary>
-    public bool AutoInstallUpdates { get; set; } = true;
+    public string? LastRunVersion { get; set; }
     public bool VerboseLogging { get; set; }
 
     /// <summary>Largeur de la barre en mode icones seules.</summary>
