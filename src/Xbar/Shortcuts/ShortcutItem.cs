@@ -56,8 +56,17 @@ public sealed class ShortcutItem
     /// <summary>Identifiant d'action intégrée (Kind == Action).</summary>
     public string ActionId { get; set; } = "";
 
-    /// <summary>Icône personnalisée : nom de fichier dans %AppData%\Xbar\icons\, ou chemin absolu.</summary>
+    /// <summary>
+    /// Icône personnalisée : nom de fichier dans %AppData%\Xbar\icons\, chemin absolu, ou
+    /// "mdi:&lt;nom&gt;" pour une icône de la bibliothèque intégrée (voir IconLibrary).
+    /// </summary>
     public string? IconOverride { get; set; }
+
+    /// <summary>
+    /// Couleur "#RRGGBB" d'une icône de la bibliothèque, ou du glyphe d'une action. Absente,
+    /// l'icône prend la couleur du texte de la barre et suit le thème.
+    /// </summary>
+    public string? IconColor { get; set; }
 
     [JsonIgnore]
     public bool IsSeparator => Kind == ShortcutKind.Separator;

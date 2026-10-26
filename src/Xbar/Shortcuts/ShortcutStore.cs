@@ -4,7 +4,10 @@ using Xbar.Localization;
 
 namespace Xbar.Shortcuts;
 
-/// <summary>Liste des raccourcis, persistee dans shortcuts.json.</summary>
+/// <summary>
+/// Liste des raccourcis de la configuration active, persistee dans shortcuts.json (ou
+/// shortcuts-2.json, shortcuts-3.json pour les configurations suivantes).
+/// </summary>
 public static class ShortcutStore
 {
     private static readonly Lock Gate = new();
@@ -16,31 +19,60 @@ public static class ShortcutStore
     /// <summary>Declenche apres toute modification de la liste.</summary>
     public static event Action? Changed;
 
-    public static void Load()
+    /// <summary>Nombre de configurations entre lesquelles la barre peut basculer.</summary>
+    public const int ProfileCount = 3;
+
+    /// <summary>Configuration chargee, de 0 a ProfileCount - 1.</summary>
+    public static int Profile { get; private set; }
+
+    private static string CurrentFile => AppPaths.ShortcutsFileFor(Profile);
+
+    /// <summary>Charge la configuration designee par les parametres.</summary>
+    public static void Load() => Load(SettingsStore.Current.ActiveProfile);
+
+    private static void Load(int profile)
     {
         lock (Gate)
         {
+            Profile = Math.Clamp(profile, 0, ProfileCount - 1);
             try
             {
-                if (File.Exists(AppPaths.ShortcutsFile))
+                if (File.Exists(CurrentFile))
                 {
-                    var json = File.ReadAllText(AppPaths.ShortcutsFile);
+                    var json = File.ReadAllText(CurrentFile);
                     List = JsonStore.Deserialize(json, JsonContext.Default.ShortcutList) ?? new ShortcutList();
                     if (Migrate(List))
-                        JsonStore.Write(AppPaths.ShortcutsFile, List, JsonContext.Default.ShortcutList);
+                        JsonStore.Write(CurrentFile, List, JsonContext.Default.ShortcutList);
                 }
                 else
                 {
+                    // Une configuration jamais ouverte demarre avec le contenu par defaut.
                     List = CreateDefault();
-                    JsonStore.Write(AppPaths.ShortcutsFile, List, JsonContext.Default.ShortcutList);
+                    JsonStore.Write(CurrentFile, List, JsonContext.Default.ShortcutList);
                 }
             }
             catch (Exception ex)
             {
-                Log.Error("Lecture de shortcuts.json impossible", ex);
+                Log.Error($"Lecture de {Path.GetFileName(CurrentFile)} impossible", ex);
                 List = CreateDefault();
             }
         }
+    }
+
+    /// <summary>
+    /// Bascule sur une autre configuration : sa liste remplace la liste courante dans toutes les
+    /// barres, et le choix est memorise pour le prochain lancement.
+    /// </summary>
+    public static void SwitchProfile(int profile)
+    {
+        profile = Math.Clamp(profile, 0, ProfileCount - 1);
+        if (profile == Profile) return;
+
+        Load(profile);
+        // Sans notification des parametres : Changed ci-dessous reconstruit deja les barres.
+        SettingsStore.UpdateQuietly(s => s.ActiveProfile = profile);
+        Log.Info($"Configuration {profile + 1} active");
+        Changed?.Invoke();
     }
 
     /// <summary>Format courant de shortcuts.json.</summary>
@@ -114,7 +146,7 @@ public static class ShortcutStore
 
     public static void Save()
     {
-        lock (Gate) JsonStore.Write(AppPaths.ShortcutsFile, List, JsonContext.Default.ShortcutList);
+        lock (Gate) JsonStore.Write(CurrentFile, List, JsonContext.Default.ShortcutList);
         Changed?.Invoke();
     }
 

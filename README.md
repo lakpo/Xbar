@@ -103,6 +103,15 @@ of the window height, so it stays where you put it whatever the size of the wind
 - the `{currentFolder}` token in arguments — for example `cursor.exe "{currentFolder}"` — is
   replaced by the folder currently on screen.
 
+**Three configurations.** Each holds its own list of shortcuts. Switch between them with the three
+small dots at the bottom of the bar — the filled one is active — or from the bar's right-click
+menu and the *Shortcuts* tab of the settings. The dots can be hidden in *Appearance*.
+
+**Icon library.** Right-click a button → *Icon library…* to pick one of the 7,400+
+[Material Design Icons](https://pictogrammers.com/library/mdi/) (Apache 2.0) built into Xbar,
+searchable by name, in any colour — or *Automatic*, which follows the bar's light or dark theme.
+The colour also applies to the glyph of built-in actions.
+
 **Built-in actions**
 
 - **Paste clipboard image** into the folder on screen, named `Clipboard_2026-09-01_13-42-18.png`,
@@ -115,7 +124,9 @@ of the window height, so it stays where you put it whatever the size of the wind
 - notification area icon, settings window, right-click menu on the bar itself;
 - English and French interface, following the Windows language by default;
 - single instance — launching Xbar again opens the settings of the running one;
-- quiet update check through GitHub Releases: never automatic, and switchable off;
+- automatic updates through GitHub Releases: the new `Xbar.exe` is downloaded, checked against
+  the SHA-256 published by GitHub, swapped in next to the old one, and Xbar restarts. Checked 20 s
+  after launch then every 6 hours. Can be reduced to a simple notification, or switched off;
 - no telemetry, no analytics, nothing sent anywhere; logs stay on your machine.
 
 ![The Xbar settings window](docs/xbar-settings.png)
@@ -129,7 +140,8 @@ of the window height, so it stays where you put it whatever the size of the wind
 | Installed | `%AppData%\Xbar\` |
 | Portable | `Data\` next to `Xbar.exe` (marker: a file named `portable`) |
 
-Holding `settings.json`, `shortcuts.json`, `history.json`, `icons\` and `logs\`.
+Holding `settings.json`, `shortcuts.json` (plus `shortcuts-2.json` and `shortcuts-3.json` for the
+other configurations), `history.json`, `icons\` and `logs\`.
 
 On the very first run the bar contains your Pictures folder — under the name Windows gives it —
 a separator, then the two built-in actions.
@@ -218,7 +230,7 @@ pair: by the second one Explorer has already opened the folder, and the answer w
 
 ## Not in this version
 
-Profiles, plugins, custom scripting, advanced multi-monitor handling, per-monitor DPI, replacing
+Plugins, custom scripting, advanced multi-monitor handling, per-monitor DPI, replacing
 the native tabs — and a bar inside Open/Save dialogs: those use the common dialog, which
 `ShellWindows` cannot see, so none of the COM integration above applies to them.
 
@@ -227,3 +239,6 @@ the native tabs — and a bar inside Open/Save dialogs: those use the common dia
 ## Licence
 
 None yet — see the repository owner.
+
+The embedded Material Design Icons are © Pictogrammers, under the Apache 2.0 licence
+(`src/Xbar/Icons/MDI-LICENSE.txt`). Regenerate them with `build/icons/generate-icons.mjs`.

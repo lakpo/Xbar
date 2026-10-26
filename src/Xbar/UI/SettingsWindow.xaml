@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:loc="clr-namespace:Xbar.Localization"
         Title="{loc:Loc Settings_Title}"
-        Width="640" Height="580"
+        Width="640" Height="640"
         MinWidth="560" MinHeight="500"
         WindowStartupLocation="CenterScreen">
 
@@ -67,6 +67,8 @@
 
                     <CheckBox x:Name="AvoidScrollbarBox" Margin="0,4"
                               Content="{loc:Loc Settings_AvoidScrollbar}" />
+                    <CheckBox x:Name="ProfileSwitcherBox" Margin="0,8,0,4"
+                              Content="{loc:Loc Settings_ShowProfileSwitcher}" />
 
                     <TextBlock Text="{loc:Loc Settings_EdgeMargin}" FontWeight="SemiBold" Margin="0,12,0,0" />
                     <DockPanel Margin="0,4,0,0">
@@ -118,10 +120,20 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                    <ListBox x:Name="ShortcutList" DisplayMemberPath="Display" />
+                    <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="{loc:Loc Settings_Profile}" FontWeight="SemiBold"
+                                   VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <ComboBox x:Name="ProfileBox" Width="160" />
+                    </StackPanel>
 
-                    <StackPanel Grid.Column="1" Margin="12,0,0,0" Width="170">
+                    <ListBox x:Name="ShortcutList" Grid.Row="1" DisplayMemberPath="Display" />
+
+                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="12,0,0,0" Width="170">
                         <Button Content="{loc:Loc Settings_AddApplication}" Margin="0,0,0,6" Padding="8,5" Click="OnAddApplication" />
                         <Button Content="{loc:Loc Settings_AddFolder}" Margin="0,0,0,6" Padding="8,5" Click="OnAddFolder" />
                         <Button Content="{loc:Loc Settings_AddFile}" Margin="0,0,0,6" Padding="8,5" Click="OnAddFile" />
@@ -130,6 +142,7 @@
                         <Button Content="{loc:Loc Settings_AddSeparator}" Margin="0,0,0,16" Padding="8,5" Click="OnAddSeparator" />
                         <Button Content="{loc:Loc Settings_Edit}" Margin="0,0,0,6" Padding="8,5" Click="OnEdit" />
                         <Button Content="{loc:Loc Settings_Rename}" Margin="0,0,0,6" Padding="8,5" Click="OnRename" />
+                        <Button Content="{loc:Loc Settings_IconLibrary}" Margin="0,0,0,6" Padding="8,5" Click="OnIconLibrary" />
                         <Button Content="{loc:Loc Settings_ChangeIcon}" Margin="0,0,0,16" Padding="8,5" Click="OnChangeIcon" />
                         <Button Content="{loc:Loc Settings_MoveUp}" Margin="0,0,0,6" Padding="8,5" Click="OnMoveUp" />
                         <Button Content="{loc:Loc Settings_MoveDown}" Margin="0,0,0,16" Padding="8,5" Click="OnMoveDown" />
@@ -141,8 +154,17 @@
             <TabItem Header="{loc:Loc Settings_TabGeneral}">
                 <StackPanel Margin="16">
                     <CheckBox x:Name="StartupBox" Margin="0,4" Content="{loc:Loc Settings_Startup}" />
-                    <CheckBox x:Name="UpdateBox" Margin="0,8"
+                    <CheckBox x:Name="UpdateBox" Margin="0,8,0,4"
                               Content="{loc:Loc Settings_CheckUpdates}" />
+                    <CheckBox x:Name="AutoInstallBox" Margin="20,4,0,4"
+                              Content="{loc:Loc Settings_AutoInstallUpdates}"
+                              IsEnabled="{Binding IsChecked, ElementName=UpdateBox}" />
+                    <StackPanel Orientation="Horizontal" Margin="20,4,0,8">
+                        <Button x:Name="CheckNowButton" Content="{loc:Loc Settings_CheckNow}"
+                                Padding="10,4" Click="OnCheckNow" />
+                        <TextBlock x:Name="UpdateStatusText" VerticalAlignment="Center"
+                                   Margin="10,0,0,0" Opacity="0.75" TextWrapping="Wrap" />
+                    </StackPanel>
                     <CheckBox x:Name="VerboseBox" Margin="0,8" Content="{loc:Loc Settings_Verbose}" />
 
                     <TextBlock Text="{loc:Loc Settings_PrivacyNote}"

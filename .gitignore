@@ -8,3 +8,7 @@ dist/
 # Brief de developpement : document personnel, volontairement hors du depot public.
 # Pour le publier : retirer cette ligne puis `git add "Xbar — Brief de développement.md"`.
 Xbar — Brief de développement.md
+
+# Paquet npm telecharge pour regenerer les icones
+build/icons/package/
+build/icons/*.tgz

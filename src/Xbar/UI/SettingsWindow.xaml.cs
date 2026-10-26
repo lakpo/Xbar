@@ -8,6 +8,7 @@ using Xbar.Core;
 using Xbar.Icons;
 using Xbar.Shortcuts;
 using Xbar.Localization;
+using Xbar.Update;
 
 namespace Xbar.UI;
 
@@ -72,6 +73,7 @@ public partial class SettingsWindow : Window
         OpacitySlider.Value = s.Opacity;
         EdgeMarginSlider.Value = s.EdgeMargin;
         AvoidScrollbarBox.IsChecked = s.AvoidScrollbar;
+        ProfileSwitcherBox.IsChecked = s.ShowProfileSwitcher;
 
         AutoHideBox.IsChecked = s.AutoHide;
         DoubleClickBox.IsChecked = s.DoubleClickGoUp;
@@ -84,11 +86,15 @@ public partial class SettingsWindow : Window
 
         StartupBox.IsChecked = StartupManager.IsEnabled();
         UpdateBox.IsChecked = s.CheckForUpdates;
+        AutoInstallBox.IsChecked = s.AutoInstallUpdates;
         VerboseBox.IsChecked = s.VerboseLogging;
 
         VersionText.Text = $"Xbar {AppInfo.Version}";
         ConfigPathText.Text = Strings.Format("Settings_ConfigPath", AppPaths.Root) +
                               (AppPaths.IsPortable ? Strings.Get("Settings_PortableSuffix") : "");
+
+        for (var i = 0; i < ShortcutStore.ProfileCount; i++)
+            ProfileBox.Items.Add(Strings.Format("Bar_ProfileTooltip", i + 1));
 
         UpdateValueLabels();
         RefreshShortcuts();
@@ -107,6 +113,12 @@ public partial class SettingsWindow : Window
         EdgeMarginSlider.ValueChanged += (_, _) => { UpdateValueLabels(); Apply(); };
 
         AvoidScrollbarBox.Click += (_, _) => Apply();
+        ProfileSwitcherBox.Click += (_, _) => Apply();
+        AutoInstallBox.Click += (_, _) => Apply();
+        ProfileBox.SelectionChanged += (_, _) =>
+        {
+            if (!_loading && ProfileBox.SelectedIndex >= 0) ShortcutStore.SwitchProfile(ProfileBox.SelectedIndex);
+        };
         AutoHideBox.Click += (_, _) => Apply();
         DoubleClickBox.Click += (_, _) => Apply();
         AskFileNameBox.Click += (_, _) => Apply();
@@ -144,6 +156,7 @@ public partial class SettingsWindow : Window
             s.Opacity = OpacitySlider.Value;
             s.EdgeMargin = EdgeMarginSlider.Value;
             s.AvoidScrollbar = AvoidScrollbarBox.IsChecked == true;
+            s.ShowProfileSwitcher = ProfileSwitcherBox.IsChecked == true;
 
             s.AutoHide = AutoHideBox.IsChecked == true;
             s.DoubleClickGoUp = DoubleClickBox.IsChecked == true;
@@ -155,6 +168,7 @@ public partial class SettingsWindow : Window
             s.ClipboardAskFileName = AskFileNameBox.IsChecked == true;
 
             s.CheckForUpdates = UpdateBox.IsChecked == true;
+            s.AutoInstallUpdates = AutoInstallBox.IsChecked == true;
             s.VerboseLogging = VerboseBox.IsChecked == true;
         });
 
@@ -186,6 +200,15 @@ public partial class SettingsWindow : Window
 
     private void RefreshShortcuts()
     {
+        // La liste affichee est celle de la configuration active, qui a pu changer depuis la barre.
+        if (ProfileBox.SelectedIndex != ShortcutStore.Profile)
+        {
+            var loading = _loading;
+            _loading = true;
+            ProfileBox.SelectedIndex = ShortcutStore.Profile;
+            _loading = loading;
+        }
+
         var selectedId = (ShortcutList.SelectedItem as ShortcutRow)?.Item.Id;
         ShortcutList.ItemsSource = ShortcutStore.Items.Select(i => new ShortcutRow(i)).ToList();
         if (selectedId is not null)
@@ -316,8 +339,14 @@ public partial class SettingsWindow : Window
 
         var copy = item.Clone();
         copy.IconOverride = stored;
+        copy.IconColor = null;
         IconService.ClearCache();
         ShortcutStore.Replace(copy);
+    }
+
+    private void OnIconLibrary(object sender, RoutedEventArgs e)
+    {
+        if (Selected is { } item) IconPickerWindow.ChooseFor(item);
     }
 
     private void OnMoveUp(object sender, RoutedEventArgs e) => MoveSelected(-1);
@@ -346,6 +375,23 @@ public partial class SettingsWindow : Window
         Process.Start(new ProcessStartInfo(AppPaths.LogsDirectory) { UseShellExecute = true });
     }
 
+    private async void OnCheckNow(object sender, RoutedEventArgs e)
+    {
+        CheckNowButton.IsEnabled = false;
+        UpdateStatusText.Text = Strings.Get("Settings_UpdateChecking");
+
+        var outcome = await UpdateService.RunAsync(manual: true);
+
+        CheckNowButton.IsEnabled = true;
+        UpdateStatusText.Text = outcome switch
+        {
+            UpdateOutcome.UpToDate => Strings.Format("Settings_UpdateUpToDate", AppInfo.Version),
+            UpdateOutcome.Available => Strings.Get("Settings_UpdateAvailable"),
+            UpdateOutcome.Installed => Strings.Get("Settings_UpdateInstalled"),
+            _ => Strings.Get("Settings_UpdateFailed")
+        };
+    }
+
     private void OnCopyDiagnostics(object sender, RoutedEventArgs e)
     {
         var s = SettingsStore.Current;
@@ -355,7 +401,8 @@ public partial class SettingsWindow : Window
         sb.AppendLine($".NET : {Environment.Version}");
         sb.AppendLine($"Configuration: {AppPaths.Root}");
         sb.AppendLine($"Theme={s.Theme} Labels={s.Labels} ButtonSize={s.ButtonSize} Opacity={s.Opacity}");
-        sb.AppendLine($"AutoHide={s.AutoHide} DoubleClick={s.DoubleClickGoUp} Shortcuts={ShortcutStore.Items.Count}");
+        sb.AppendLine($"AutoHide={s.AutoHide} DoubleClick={s.DoubleClickGoUp} Shortcuts={ShortcutStore.Items.Count} Profile={ShortcutStore.Profile + 1}");
+        sb.AppendLine($"CheckForUpdates={s.CheckForUpdates} AutoInstallUpdates={s.AutoInstallUpdates}");
         sb.AppendLine();
         sb.AppendLine(Strings.Get("Settings_RecentLog"));
         sb.AppendLine(Log.GetRecent());

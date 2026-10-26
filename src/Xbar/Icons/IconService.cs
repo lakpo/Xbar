@@ -30,7 +30,13 @@ public static class IconService
     /// </summary>
     public static ImageSource? GetIcon(ShortcutItem item, int desiredPixelSize = 32)
     {
-        if (!string.IsNullOrWhiteSpace(item.IconOverride))
+        if (IconLibrary.NameOf(item.IconOverride) is { } libraryName)
+        {
+            var brush = IconLibrary.ParseColor(item.IconColor) ?? IconLibrary.ThemeBrush();
+            var vector = IconLibrary.Render(libraryName, brush);
+            if (vector is not null) return vector;
+        }
+        else if (!string.IsNullOrWhiteSpace(item.IconOverride))
         {
             var path = ResolveIconOverride(item.IconOverride);
             if (path is not null)
@@ -52,7 +58,7 @@ public static class IconService
 
     public static string? ResolveIconOverride(string? value)
     {
-        if (string.IsNullOrWhiteSpace(value)) return null;
+        if (string.IsNullOrWhiteSpace(value) || IconLibrary.IsLibraryIcon(value)) return null;
         if (Path.IsPathRooted(value)) return File.Exists(value) ? value : null;
         var local = Path.Combine(AppPaths.IconsDirectory, value);
         return File.Exists(local) ? local : null;

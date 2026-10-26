@@ -501,4 +501,73 @@ Clic : ouvrir ici  ·  Molette : nouvel onglet  ·  Ctrl+clic : nouvelle fenêtr
   <data name="Editor_TitleShellLocation" xml:space="preserve">
     <value>Modifier l'emplacement Windows</value>
   </data>
+  <data name="Bar_ProfileTooltip" xml:space="preserve">
+    <value>Configuration {0}</value>
+  </data>
+  <data name="Menu_Profile" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="Menu_IconLibrary" xml:space="preserve">
+    <value>Bibliothèque d'icônes...</value>
+  </data>
+  <data name="Settings_ShowProfileSwitcher" xml:space="preserve">
+    <value>Afficher le sélecteur de configuration (trois pastilles en bas de la barre)</value>
+  </data>
+  <data name="Settings_Profile" xml:space="preserve">
+    <value>Configuration :</value>
+  </data>
+  <data name="Settings_IconLibrary" xml:space="preserve">
+    <value>Bibliothèque d'icônes...</value>
+  </data>
+  <data name="Settings_AutoInstallUpdates" xml:space="preserve">
+    <value>Installer automatiquement les mises à jour (Xbar redémarre de lui-même)</value>
+  </data>
+  <data name="Settings_CheckNow" xml:space="preserve">
+    <value>Rechercher maintenant</value>
+  </data>
+  <data name="Settings_UpdateChecking" xml:space="preserve">
+    <value>Recherche en cours...</value>
+  </data>
+  <data name="Settings_UpdateUpToDate" xml:space="preserve">
+    <value>Xbar {0} est à jour.</value>
+  </data>
+  <data name="Settings_UpdateAvailable" xml:space="preserve">
+    <value>Une nouvelle version est disponible (voir la notification).</value>
+  </data>
+  <data name="Settings_UpdateInstalled" xml:space="preserve">
+    <value>Mise à jour installée, Xbar redémarre...</value>
+  </data>
+  <data name="Settings_UpdateFailed" xml:space="preserve">
+    <value>Impossible de joindre GitHub.</value>
+  </data>
+  <data name="Msg_Updated" xml:space="preserve">
+    <value>Xbar a été mis à jour en version {0}.</value>
+  </data>
+  <data name="IconPicker_Title" xml:space="preserve">
+    <value>Bibliothèque d'icônes</value>
+  </data>
+  <data name="IconPicker_Search" xml:space="preserve">
+    <value>Rechercher (noms anglais : folder, music, code...)</value>
+  </data>
+  <data name="IconPicker_Results" xml:space="preserve">
+    <value>{0} icônes</value>
+  </data>
+  <data name="IconPicker_ResultsTruncated" xml:space="preserve">
+    <value>{0} icônes, les {1} premières sont affichées : affinez la recherche.</value>
+  </data>
+  <data name="IconPicker_Color" xml:space="preserve">
+    <value>Couleur</value>
+  </data>
+  <data name="IconPicker_ColorAuto" xml:space="preserve">
+    <value>Automatique (suit le thème de la barre)</value>
+  </data>
+  <data name="IconPicker_CustomColor" xml:space="preserve">
+    <value>Couleur personnalisée, par ex. #FF8800</value>
+  </data>
+  <data name="IconPicker_NoSelection" xml:space="preserve">
+    <value>Aucune icône choisie</value>
+  </data>
+  <data name="IconPicker_Credit" xml:space="preserve">
+    <value>Material Design Icons par Pictogrammers, licence Apache 2.0.</value>
+  </data>
 </root>

@@ -107,6 +107,17 @@ de celle-ci.
 - le jeton `{currentFolder}` dans les arguments — par exemple `cursor.exe "{currentFolder}"` —
   est remplacé par le dossier affiché.
 
+**Trois configurations.** Chacune a sa propre liste de raccourcis. On passe de l'une à l'autre
+avec les trois petites pastilles en bas de la barre — la pleine est l'active — ou depuis le menu
+du clic droit sur la barre et l'onglet *Raccourcis* des paramètres. Les pastilles se masquent dans
+*Apparence*.
+
+**Bibliothèque d'icônes.** Clic droit sur un bouton → *Bibliothèque d'icônes…* pour choisir
+l'une des 7 400+ [Material Design Icons](https://pictogrammers.com/library/mdi/) (Apache 2.0)
+intégrées à Xbar, avec recherche par nom, dans la couleur de votre choix — ou *Automatique*, qui
+suit le thème clair ou sombre de la barre. La couleur s'applique aussi au glyphe des actions
+intégrées.
+
 **Actions intégrées**
 
 - **Coller l'image du presse-papiers** dans le dossier affiché, nommée
@@ -120,7 +131,10 @@ de celle-ci.
 - icône dans la zone de notification, fenêtre de paramètres, menu contextuel sur la barre ;
 - interface française et anglaise, suivant la langue de Windows par défaut ;
 - instance unique — relancer Xbar ouvre les paramètres de celle qui tourne ;
-- vérification discrète des mises à jour via GitHub Releases : jamais automatique, désactivable ;
+- mise à jour automatique via GitHub Releases : le nouveau `Xbar.exe` est téléchargé, vérifié
+  contre l'empreinte SHA-256 publiée par GitHub, mis à la place de l'ancien, puis Xbar redémarre.
+  Recherche 20 s après le lancement puis toutes les 6 heures. Réductible à une simple
+  notification, ou désactivable ;
 - aucune télémétrie, aucun analytics, aucun envoi ; les journaux restent sur votre machine.
 
 ![La fenêtre de paramètres de Xbar](docs/xbar-settings.png)
@@ -134,7 +148,8 @@ de celle-ci.
 | Installé | `%AppData%\Xbar\` |
 | Portable | `Data\` à côté de `Xbar.exe` (marqueur : un fichier nommé `portable`) |
 
-Contenant `settings.json`, `shortcuts.json`, `history.json`, `icons\` et `logs\`.
+Contenant `settings.json`, `shortcuts.json` (plus `shortcuts-2.json` et `shortcuts-3.json` pour
+les autres configurations), `history.json`, `icons\` et `logs\`.
 
 Au tout premier lancement, la barre contient votre dossier Images — sous le nom que Windows lui
 donne — un séparateur, puis les deux actions intégrées.
@@ -228,7 +243,7 @@ dossier, et la réponse serait fausse.
 
 ## Hors périmètre de cette version
 
-Profils, plugins, scripts personnalisés, gestion multi-écrans avancée, DPI par écran, remplacement
+Plugins, scripts personnalisés, gestion multi-écrans avancée, DPI par écran, remplacement
 des onglets natifs — et une barre dans les boîtes « Ouvrir »/« Enregistrer sous » : celles-ci
 utilisent la boîte de dialogue commune, invisible à `ShellWindows`, donc aucune de l'intégration
 COM ci-dessus ne s'y applique.
@@ -238,3 +253,6 @@ COM ci-dessus ne s'y applique.
 ## Licence
 
 Pas encore définie — voir le propriétaire du dépôt.
+
+Les Material Design Icons intégrées sont © Pictogrammers, sous licence Apache 2.0
+(`src/Xbar/Icons/MDI-LICENSE.txt`). Elles se régénèrent avec `build/icons/generate-icons.mjs`.

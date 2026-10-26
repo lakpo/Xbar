@@ -21,7 +21,12 @@ public static class AppPaths
         : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Xbar");
 
     public static string SettingsFile => Path.Combine(Root, "settings.json");
-    public static string ShortcutsFile => Path.Combine(Root, "shortcuts.json");
+    /// <summary>
+    /// Liste de raccourcis d'une configuration. La premiere garde le nom historique
+    /// shortcuts.json : une installation existante la retrouve telle quelle.
+    /// </summary>
+    public static string ShortcutsFileFor(int profile) =>
+        Path.Combine(Root, profile <= 0 ? "shortcuts.json" : $"shortcuts-{profile + 1}.json");
     public static string HistoryFile => Path.Combine(Root, "history.json");
     public static string IconsDirectory => Path.Combine(Root, "icons");
     public static string LogsDirectory => Path.Combine(Root, "logs");

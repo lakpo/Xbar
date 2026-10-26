@@ -21,19 +21,24 @@ public partial class App : Application
     private OverlayManager? _overlays;
     private TrayIcon? _tray;
     private EmptyAreaDoubleClick? _doubleClick;
+    private DispatcherTimer? _updateTimer;
 
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
-        _instance = new SingleInstance();
+        // Relance apres une mise a jour : l'ancienne instance est en train de se fermer, on
+        // attend qu'elle ait rendu la main plutot que de lui renvoyer une commande.
+        var afterUpdate = e.Args.Any(
+            a => string.Equals(a, Updater.UpdatedSwitch, StringComparison.OrdinalIgnoreCase));
+        _instance = afterUpdate ? WaitForPreviousInstance() : new SingleInstance();
         if (!_instance.IsFirstInstance)
         {
             // Une instance existe deja. Relancer Xbar a la main veut dire "montre-toi" ; un
             // lancement automatique au demarrage, lui, ne doit rien afficher.
             var launchedByWindows = e.Args.Any(
                 a => string.Equals(a, StartupManager.AutostartSwitch, StringComparison.OrdinalIgnoreCase));
-            if (!launchedByWindows) SingleInstance.SendCommand(CommandShowSettings);
+            if (!launchedByWindows && !afterUpdate) SingleInstance.SendCommand(CommandShowSettings);
             Shutdown();
             return;
         }
@@ -78,6 +83,15 @@ public partial class App : Application
             Log.Info("Premier lancement : configuration par defaut creee");
         }
 
+        UpdateService.Notification += message =>
+            Dispatcher.BeginInvoke(() => _tray?.ShowBalloon("Xbar", message));
+
+        if (afterUpdate)
+        {
+            _tray.ShowBalloon("Xbar", Strings.Format("Msg_Updated", AppInfo.Version));
+            Log.Info($"Xbar mis a jour en version {AppInfo.Version}");
+        }
+        _ = Updater.CleanupAsync();
         _ = CheckForUpdatesAsync();
 
         Log.Info("Xbar est pret");
@@ -141,13 +155,30 @@ public partial class App : Application
         try
         {
             await Task.Delay(TimeSpan.FromSeconds(20));
-            var update = await UpdateChecker.CheckAsync();
-            if (update is null) return;
-
-            _ = Dispatcher.BeginInvoke(() => _tray?.ShowBalloon("Xbar",
-                Strings.Format("Msg_UpdateAvailable", update.Version)));
+            await UpdateService.RunAsync(manual: false);
         }
         catch (Exception ex) { Log.Debug($"Verification des mises a jour : {ex.Message}"); }
+
+        // Xbar reste ouvert des jours durant : on recommence regulierement.
+        _updateTimer = new DispatcherTimer { Interval = UpdateService.CheckInterval };
+        _updateTimer.Tick += async (_, _) => await UpdateService.RunAsync(manual: false);
+        _updateTimer.Start();
+    }
+
+    /// <summary>
+    /// Attend que l'instance remplacee par une mise a jour ait libere le verrou d'instance unique.
+    /// </summary>
+    private static SingleInstance WaitForPreviousInstance()
+    {
+        var instance = new SingleInstance();
+        var deadline = DateTime.UtcNow.AddSeconds(20);
+        while (!instance.IsFirstInstance && DateTime.UtcNow < deadline)
+        {
+            instance.Dispose();
+            Thread.Sleep(250);
+            instance = new SingleInstance();
+        }
+        return instance;
     }
 
     private void Quit()
@@ -164,6 +195,7 @@ public partial class App : Application
 
     protected override void OnExit(ExitEventArgs e)
     {
+        _updateTimer?.Stop();
         _doubleClick?.Dispose();
         _overlays?.Dispose();
         _tray?.Dispose();

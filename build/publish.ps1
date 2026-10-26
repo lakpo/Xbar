@@ -6,6 +6,7 @@
     Produit dans dist\ :
       - Xbar-<version>-portable\      version portable (marqueur "portable", données à côté de l'exe)
       - Xbar-<version>-portable.zip
+      - Xbar.exe                      executable seul, pour la version GitHub et la mise a jour
       - install\                      contenu prêt pour l'installateur
       - Xbar-<version>-setup.exe      si Inno Setup (ISCC.exe) est disponible
 
@@ -68,6 +69,10 @@ if (Test-Path $dist) { Remove-Item $dist -Recurse -Force }
     -p:DebugType=embedded `
     -o $installDir
 if ($LASTEXITCODE -ne 0) { throw "La publication a échoué." }
+
+# Executable seul, a joindre tel quel a la version GitHub sous le nom "Xbar.exe" : c'est ce
+# fichier que la mise a jour automatique telecharge (voir src\Xbar\Update\Updater.cs).
+Copy-Item (Join-Path $installDir 'Xbar.exe') (Join-Path $dist 'Xbar.exe')
 
 # --- Version portable : même contenu + marqueur "portable" ---
 Copy-Item $installDir $portableDir -Recurse

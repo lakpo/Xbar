@@ -22,4 +22,10 @@
     <DebugType>embedded</DebugType>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- Material Design Icons (Apache 2.0), regenerees par build\icons\generate-icons.mjs -->
+    <EmbeddedResource Include="Icons\mdi.txt.gz" LogicalName="Xbar.Icons.mdi.txt.gz" />
+    <None Include="Icons\MDI-LICENSE.txt" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

@@ -66,8 +66,24 @@ public static class SettingsStore
         Apply(copy);
     }
 
+    /// <summary>
+    /// Modifie et enregistre la configuration sans prevenir les abonnes : pour un changement
+    /// dont l'appelant gere lui-meme les effets (le changement de configuration de raccourcis).
+    /// </summary>
+    public static void UpdateQuietly(Action<AppSettings> mutate)
+    {
+        lock (Gate)
+        {
+            var copy = Current.Clone();
+            mutate(copy);
+            Current = copy;
+        }
+        Save();
+    }
+
     private static void Normalize(AppSettings s)
     {
+        s.ActiveProfile = Math.Clamp(s.ActiveProfile, 0, Shortcuts.ShortcutStore.ProfileCount - 1);
         s.ButtonSize = Math.Clamp(s.ButtonSize, 20, 64);
         s.Opacity = Math.Clamp(s.Opacity, 0.2, 1.0);
         s.EdgeMargin = Math.Clamp(s.EdgeMargin, 0, 64);

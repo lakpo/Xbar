@@ -148,11 +148,65 @@ public partial class OverlayWindow : Window
             : 0;
         HideItemLabel(animated: false);
 
+        BuildProfileSwitcher(settings);
+
         ItemsHost.Visibility = _collapsed ? Visibility.Collapsed : Visibility.Visible;
         DragGrip.Visibility = _collapsed ? Visibility.Collapsed : Visibility.Visible;
+        ProfileHost.Visibility = _collapsed || !settings.ShowProfileSwitcher
+            ? Visibility.Collapsed
+            : Visibility.Visible;
         BarRoot.BeginAnimation(WidthProperty, null);
         BarRoot.Width = TargetBarWidth();
         UpdatePlacement();
+    }
+
+    /// <summary>
+    /// Trois pastilles sous les boutons, une par configuration. Leur taille suit celle des
+    /// boutons, mais reste assez petite pour que les trois tiennent dans la barre compacte
+    /// (ButtonSize + 2 DIP de large a l'interieur) : 3 x 5 + 2 x 3 = 21 DIP au minimum.
+    /// </summary>
+    private void BuildProfileSwitcher(AppSettings settings)
+    {
+        ProfileHost.Children.Clear();
+        if (!settings.ShowProfileSwitcher) return;
+
+        var dot = Math.Clamp(settings.ButtonSize * 0.22, 5, 8);
+        var gap = dot * 0.6;
+
+        for (var i = 0; i < ShortcutStore.ProfileCount; i++)
+        {
+            var profile = i;
+            var active = profile == ShortcutStore.Profile;
+
+            var ellipse = new System.Windows.Shapes.Ellipse
+            {
+                Width = dot,
+                Height = dot,
+                StrokeThickness = active ? 0 : 1
+            };
+            ellipse.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty, "BarForeground");
+            if (active) ellipse.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "BarForeground");
+
+            // Zone cliquable plus grande que la pastille elle-meme, sans la deformer.
+            var target = new Border
+            {
+                Background = Brushes.Transparent,
+                Child = ellipse,
+                Padding = new Thickness(gap / 2, 3, gap / 2, 3),
+                Opacity = active ? 0.9 : 0.55,
+                Cursor = active ? null : Cursors.Hand,
+                ToolTip = Strings.Format("Bar_ProfileTooltip", profile + 1)
+            };
+            target.MouseEnter += (_, _) => target.Opacity = 1;
+            target.MouseLeave += (_, _) => target.Opacity = active ? 0.9 : 0.55;
+            target.MouseLeftButtonUp += (_, e) =>
+            {
+                e.Handled = true;
+                ShortcutStore.SwitchProfile(profile);
+            };
+            // Le clic droit garde le menu de la barre, qui propose aussi le changement.
+            ProfileHost.Children.Add(target);
+        }
     }
 
     /// <summary>
@@ -247,6 +301,23 @@ public partial class OverlayWindow : Window
 
     private static UIElement CreateItemVisual(ShortcutItem item, double size, int pixelSize)
     {
+        // Icone de la bibliotheque en couleur automatique : la forme sert de masque a un fond
+        // lie a la ressource du theme, si bien qu'elle suit un changement de theme sans attendre
+        // la reconstruction de la barre.
+        if (IconLibrary.NameOf(item.IconOverride) is { } libraryName
+            && IconLibrary.ParseColor(item.IconColor) is null
+            && IconLibrary.Render(libraryName, Brushes.Black) is { } mask)
+        {
+            var shape = new System.Windows.Shapes.Rectangle
+            {
+                Width = size,
+                Height = size,
+                OpacityMask = new ImageBrush(mask) { Stretch = Stretch.Uniform }
+            };
+            shape.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "BarForeground");
+            return shape;
+        }
+
         if (item.Kind == ShortcutKind.Action)
         {
             var action = ActionRegistry.Find(item.ActionId);
@@ -265,7 +336,8 @@ public partial class OverlayWindow : Window
                 VerticalAlignment = VerticalAlignment.Center,
                 Padding = new Thickness(0, size * 0.18, 0, 0)
             };
-            glyph.SetResourceReference(TextBlock.ForegroundProperty, "BarForeground");
+            if (IconLibrary.ParseColor(item.IconColor) is { } color) glyph.Foreground = color;
+            else glyph.SetResourceReference(TextBlock.ForegroundProperty, "BarForeground");
             return glyph;
         }
 
@@ -519,8 +591,11 @@ public partial class OverlayWindow : Window
     {
         if (!SettingsStore.Current.AutoHide || _collapsed) return;
         _collapsed = true;
-        AnimateBarWidthTo(TargetBarWidth(),
-            () => ItemsHost.Visibility = Visibility.Collapsed);
+        AnimateBarWidthTo(TargetBarWidth(), () =>
+        {
+            ItemsHost.Visibility = Visibility.Collapsed;
+            ProfileHost.Visibility = Visibility.Collapsed;
+        });
     }
 
     private void Expand()
@@ -528,6 +603,7 @@ public partial class OverlayWindow : Window
         if (!_collapsed) return;
         _collapsed = false;
         ItemsHost.Visibility = Visibility.Visible;
+        if (SettingsStore.Current.ShowProfileSwitcher) ProfileHost.Visibility = Visibility.Visible;
         AnimateBarWidthTo(TargetBarWidth(), null);
     }
 
@@ -1141,6 +1217,18 @@ public partial class OverlayWindow : Window
         })));
         menu.Items.Add(add);
 
+        var profiles = new MenuItem { Header = Strings.Get("Menu_Profile") };
+        for (var i = 0; i < ShortcutStore.ProfileCount; i++)
+        {
+            var profile = i;
+            var entry = Item(Strings.Format("Bar_ProfileTooltip", profile + 1),
+                () => ShortcutStore.SwitchProfile(profile));
+            entry.IsCheckable = true;
+            entry.IsChecked = profile == ShortcutStore.Profile;
+            profiles.Items.Add(entry);
+        }
+        menu.Items.Add(profiles);
+
         menu.Items.Add(new Separator());
 
         var autoHide = new MenuItem
@@ -1178,12 +1266,14 @@ public partial class OverlayWindow : Window
             menu.Items.Add(new Separator());
             menu.Items.Add(Item(Strings.Get("Menu_Edit"), () => UI.ShortcutEditorWindow.Edit(item)));
             menu.Items.Add(Item(Strings.Get("Menu_Rename"), () => Rename(item)));
+            menu.Items.Add(Item(Strings.Get("Menu_IconLibrary"), () => UI.IconPickerWindow.ChooseFor(item)));
             menu.Items.Add(Item(Strings.Get("Menu_ChangeIcon"), () => ChangeIcon(item)));
-            if (item.IconOverride is not null)
+            if (item.IconOverride is not null || item.IconColor is not null)
                 menu.Items.Add(Item(Strings.Get("Menu_DefaultIcon"), () =>
                 {
                     var copy = item.Clone();
                     copy.IconOverride = null;
+                    copy.IconColor = null;
                     ShortcutStore.Replace(copy);
                 }));
             menu.Items.Add(new Separator());
@@ -1223,6 +1313,7 @@ public partial class OverlayWindow : Window
 
         var copy = item.Clone();
         copy.IconOverride = stored;
+        copy.IconColor = null;
         IconService.ClearCache();
         ShortcutStore.Replace(copy);
     }

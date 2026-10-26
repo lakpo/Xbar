@@ -71,6 +71,12 @@
                     ToolTip="{loc:Loc Bar_GripTooltip}" />
 
             <StackPanel x:Name="ItemsHost" Orientation="Vertical" />
+
+            <!-- Pastilles de configuration : une par liste de raccourcis, la pleine est l'active -->
+            <StackPanel x:Name="ProfileHost"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,4,0,0" />
         </StackPanel>
     </Border>
 
