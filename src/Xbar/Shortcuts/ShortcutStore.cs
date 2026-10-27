@@ -5,8 +5,8 @@ using Xbar.Localization;
 namespace Xbar.Shortcuts;
 
 /// <summary>
-/// Liste des raccourcis de la configuration active, persistee dans shortcuts.json (ou
-/// shortcuts-2.json, shortcuts-3.json pour les configurations suivantes).
+/// Liste des raccourcis de la barre active, persistee dans shortcuts.json (ou shortcuts-2.json
+/// pour la seconde barre).
 /// </summary>
 public static class ShortcutStore
 {
@@ -19,8 +19,8 @@ public static class ShortcutStore
     /// <summary>Declenche apres toute modification de la liste.</summary>
     public static event Action? Changed;
 
-    /// <summary>Nombre de configurations entre lesquelles la barre peut basculer.</summary>
-    public const int ProfileCount = 3;
+    /// <summary>Nombre de barres entre lesquelles on peut basculer.</summary>
+    public const int ProfileCount = 2;
 
     /// <summary>Configuration chargee, de 0 a ProfileCount - 1.</summary>
     public static int Profile { get; private set; }
@@ -71,9 +71,12 @@ public static class ShortcutStore
         Load(profile);
         // Sans notification des parametres : Changed ci-dessous reconstruit deja les barres.
         SettingsStore.UpdateQuietly(s => s.ActiveProfile = profile);
-        Log.Info($"Configuration {profile + 1} active");
+        Log.Info($"Barre {profile + 1} active");
         Changed?.Invoke();
     }
+
+    /// <summary>Bascule sur la barre suivante (Tab au survol de la barre).</summary>
+    public static void SwitchToNextProfile() => SwitchProfile((Profile + 1) % ProfileCount);
 
     /// <summary>Format courant de shortcuts.json.</summary>
     private const int CurrentVersion = 2;

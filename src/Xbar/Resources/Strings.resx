@@ -502,19 +502,16 @@ Click: open here  ·  Middle-click: new tab  ·  Ctrl+click: new window</value>
     <value>Edit Windows location</value>
   </data>
   <data name="Bar_ProfileTooltip" xml:space="preserve">
-    <value>Configuration {0}</value>
+    <value>Bar {0}</value>
   </data>
-  <data name="Menu_Profile" xml:space="preserve">
-    <value>Configuration</value>
+  <data name="Menu_SwitchBar" xml:space="preserve">
+    <value>Switch to bar {0}</value>
   </data>
   <data name="Menu_IconLibrary" xml:space="preserve">
     <value>Icon library...</value>
   </data>
-  <data name="Settings_ShowProfileSwitcher" xml:space="preserve">
-    <value>Show the configuration switcher (three dots at the bottom of the bar)</value>
-  </data>
   <data name="Settings_Profile" xml:space="preserve">
-    <value>Configuration:</value>
+    <value>Bar:</value>
   </data>
   <data name="Settings_IconLibrary" xml:space="preserve">
     <value>Icon library...</value>

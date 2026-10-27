@@ -103,9 +103,10 @@ of the window height, so it stays where you put it whatever the size of the wind
 - the `{currentFolder}` token in arguments — for example `cursor.exe "{currentFolder}"` — is
   replaced by the folder currently on screen.
 
-**Three configurations.** Each holds its own list of shortcuts. Switch between them with the three
-small dots at the bottom of the bar — the filled one is active — or from the bar's right-click
-menu and the *Shortcuts* tab of the settings. The dots can be hidden in *Appearance*.
+**Two bars.** Each holds its own list of shortcuts. With the mouse over the bar, press **Tab** to
+switch to the other one; a short message shows which bar is on screen. The bar's right-click menu
+and the *Shortcuts* tab of the settings do the same. Tab is only claimed while the pointer is over
+the bar.
 
 **Icon library.** Right-click a button → *Icon library…* to pick one of the 7,400+
 [Material Design Icons](https://pictogrammers.com/library/mdi/) (Apache 2.0) built into Xbar,
@@ -142,8 +143,8 @@ The colour also applies to the glyph of built-in actions.
 | Installed | `%AppData%\Xbar\` |
 | Portable | `Data\` next to `Xbar.exe` (marker: a file named `portable`) |
 
-Holding `settings.json`, `shortcuts.json` (plus `shortcuts-2.json` and `shortcuts-3.json` for the
-other configurations), `history.json`, `icons\` and `logs\`.
+Holding `settings.json`, `shortcuts.json` (plus `shortcuts-2.json` for the
+second bar), `history.json`, `icons\` and `logs\`.
 
 On the very first run the bar contains your Pictures folder — under the name Windows gives it —
 a separator, then the two built-in actions.

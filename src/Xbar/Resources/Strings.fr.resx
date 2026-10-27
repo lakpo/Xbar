@@ -502,19 +502,16 @@ Clic : ouvrir ici  ·  Molette : nouvel onglet  ·  Ctrl+clic : nouvelle fenêtr
     <value>Modifier l'emplacement Windows</value>
   </data>
   <data name="Bar_ProfileTooltip" xml:space="preserve">
-    <value>Configuration {0}</value>
+    <value>Barre {0}</value>
   </data>
-  <data name="Menu_Profile" xml:space="preserve">
-    <value>Configuration</value>
+  <data name="Menu_SwitchBar" xml:space="preserve">
+    <value>Passer à la barre {0}</value>
   </data>
   <data name="Menu_IconLibrary" xml:space="preserve">
     <value>Bibliothèque d'icônes...</value>
   </data>
-  <data name="Settings_ShowProfileSwitcher" xml:space="preserve">
-    <value>Afficher le sélecteur de configuration (trois pastilles en bas de la barre)</value>
-  </data>
   <data name="Settings_Profile" xml:space="preserve">
-    <value>Configuration :</value>
+    <value>Barre :</value>
   </data>
   <data name="Settings_IconLibrary" xml:space="preserve">
     <value>Bibliothèque d'icônes...</value>

@@ -125,8 +125,61 @@ public partial class OverlayWindow : Window
         // Fenetre possedee par l'Explorer : reste au-dessus de lui, mais pas des autres applications.
         NativeMethods.SetWindowLongPtr(_handle, NativeMethods.GWLP_HWNDPARENT, ExplorerHwnd);
 
+        HwndSource.FromHwnd(_handle)?.AddHook(WndProc);
+
         Rebuild();
         UpdatePlacement();
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        SetSwitchHotkey(false);
+        base.OnClosed(e);
+    }
+
+    // ---------------------------------------------------------------- changement de barre
+
+    private const int SwitchHotkeyId = 1;
+    private bool _switchHotkeyRegistered;
+
+    /// <summary>
+    /// Tab fait passer a l'autre barre tant que la souris survole celle-ci. La barre n'a jamais
+    /// le focus clavier (WS_EX_NOACTIVATE) : la touche est donc reservee par RegisterHotKey,
+    /// le temps du survol seulement, puis rendue aussitot a l'Explorateur.
+    /// </summary>
+    private void SetSwitchHotkey(bool enabled)
+    {
+        if (_handle == IntPtr.Zero || enabled == _switchHotkeyRegistered) return;
+
+        if (enabled)
+        {
+            _switchHotkeyRegistered = NativeMethods.RegisterHotKey(_handle, SwitchHotkeyId,
+                NativeMethods.MOD_NOREPEAT, NativeMethods.VK_TAB);
+            if (!_switchHotkeyRegistered) Log.Debug("Tab au survol de la barre : touche deja reservee");
+        }
+        else
+        {
+            NativeMethods.UnregisterHotKey(_handle, SwitchHotkeyId);
+            _switchHotkeyRegistered = false;
+        }
+    }
+
+    private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        if (msg == NativeMethods.WM_HOTKEY && wParam.ToInt32() == SwitchHotkeyId)
+        {
+            handled = true;
+            // Securite : la souris a pu quitter la barre sans que MouseLeave soit recu.
+            if (IsMouseOver) SwitchToNextBar();
+            else SetSwitchHotkey(false);
+        }
+        return IntPtr.Zero;
+    }
+
+    private void SwitchToNextBar()
+    {
+        ShortcutStore.SwitchToNextProfile();
+        ShowFeedback(Strings.Format("Bar_ProfileTooltip", ShortcutStore.Profile + 1), true);
     }
 
     // ---------------------------------------------------------------- contenu
@@ -148,65 +201,26 @@ public partial class OverlayWindow : Window
             : 0;
         HideItemLabel(animated: false);
 
-        BuildProfileSwitcher(settings);
-
         ItemsHost.Visibility = _collapsed ? Visibility.Collapsed : Visibility.Visible;
         DragGrip.Visibility = _collapsed ? Visibility.Collapsed : Visibility.Visible;
-        ProfileHost.Visibility = _collapsed || !settings.ShowProfileSwitcher
-            ? Visibility.Collapsed
-            : Visibility.Visible;
         BarRoot.BeginAnimation(WidthProperty, null);
         BarRoot.Width = TargetBarWidth();
+        InvalidateBarMeasure();
         UpdatePlacement();
     }
 
     /// <summary>
-    /// Trois pastilles sous les boutons, une par configuration. Leur taille suit celle des
-    /// boutons, mais reste assez petite pour que les trois tiennent dans la barre compacte
-    /// (ButtonSize + 2 DIP de large a l'interieur) : 3 x 5 + 2 x 3 = 21 DIP au minimum.
+    /// Changer les boutons ne declare a remesurer que ItemsHost : ses parents gardent leur mesure
+    /// precedente, et BarRoot.Measure, rappele avec la meme contrainte, renverrait l'ancienne
+    /// hauteur. La fenetre garderait alors la taille de l'ancienne liste (boutons coupes, ou vide
+    /// en bas), par exemple en passant d'une barre a l'autre. On invalide donc toute la chaine.
     /// </summary>
-    private void BuildProfileSwitcher(AppSettings settings)
+    private void InvalidateBarMeasure()
     {
-        ProfileHost.Children.Clear();
-        if (!settings.ShowProfileSwitcher) return;
-
-        var dot = Math.Clamp(settings.ButtonSize * 0.22, 5, 8);
-        var gap = dot * 0.6;
-
-        for (var i = 0; i < ShortcutStore.ProfileCount; i++)
-        {
-            var profile = i;
-            var active = profile == ShortcutStore.Profile;
-
-            var ellipse = new System.Windows.Shapes.Ellipse
-            {
-                Width = dot,
-                Height = dot,
-                StrokeThickness = active ? 0 : 1
-            };
-            ellipse.SetResourceReference(System.Windows.Shapes.Shape.StrokeProperty, "BarForeground");
-            if (active) ellipse.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "BarForeground");
-
-            // Zone cliquable plus grande que la pastille elle-meme, sans la deformer.
-            var target = new Border
-            {
-                Background = Brushes.Transparent,
-                Child = ellipse,
-                Padding = new Thickness(gap / 2, 3, gap / 2, 3),
-                Opacity = active ? 0.9 : 0.55,
-                Cursor = active ? null : Cursors.Hand,
-                ToolTip = Strings.Format("Bar_ProfileTooltip", profile + 1)
-            };
-            target.MouseEnter += (_, _) => target.Opacity = 1;
-            target.MouseLeave += (_, _) => target.Opacity = active ? 0.9 : 0.55;
-            target.MouseLeftButtonUp += (_, e) =>
-            {
-                e.Handled = true;
-                ShortcutStore.SwitchProfile(profile);
-            };
-            // Le clic droit garde le menu de la barre, qui propose aussi le changement.
-            ProfileHost.Children.Add(target);
-        }
+        for (UIElement? element = ItemsHost;
+             element is not null && !ReferenceEquals(element, this);
+             element = VisualTreeHelper.GetParent(element) as UIElement)
+            element.InvalidateMeasure();
     }
 
     /// <summary>
@@ -574,6 +588,7 @@ public partial class OverlayWindow : Window
         if (_handle == IntPtr.Zero) return;
         if (!_placementValid && Visibility != Visibility.Visible) return;
         _placementValid = false;
+        SetSwitchHotkey(false);
         NativeMethods.SetWindowPos(_handle, IntPtr.Zero, 0, 0, 0, 0,
             NativeMethods.SWP_NOMOVE | NativeMethods.SWP_NOSIZE | NativeMethods.SWP_NOACTIVATE |
             NativeMethods.SWP_HIDEWINDOW | NativeMethods.SWP_NOZORDER | NativeMethods.SWP_NOOWNERZORDER);
@@ -591,11 +606,8 @@ public partial class OverlayWindow : Window
     {
         if (!SettingsStore.Current.AutoHide || _collapsed) return;
         _collapsed = true;
-        AnimateBarWidthTo(TargetBarWidth(), () =>
-        {
-            ItemsHost.Visibility = Visibility.Collapsed;
-            ProfileHost.Visibility = Visibility.Collapsed;
-        });
+        AnimateBarWidthTo(TargetBarWidth(),
+            () => ItemsHost.Visibility = Visibility.Collapsed);
     }
 
     private void Expand()
@@ -603,7 +615,6 @@ public partial class OverlayWindow : Window
         if (!_collapsed) return;
         _collapsed = false;
         ItemsHost.Visibility = Visibility.Visible;
-        if (SettingsStore.Current.ShowProfileSwitcher) ProfileHost.Visibility = Visibility.Visible;
         AnimateBarWidthTo(TargetBarWidth(), null);
     }
 
@@ -662,6 +673,7 @@ public partial class OverlayWindow : Window
 
     private void OnBarMouseEnter(object sender, MouseEventArgs e)
     {
+        SetSwitchHotkey(true);
         _collapseTimer.Stop();
         Expand();
         SetLabelsExpanded(true);
@@ -669,6 +681,7 @@ public partial class OverlayWindow : Window
 
     private void OnBarMouseLeave(object sender, MouseEventArgs e)
     {
+        SetSwitchHotkey(false);
         HideItemLabel(animated: true);
 
         if (SettingsStore.Current.AutoHide ||
@@ -1217,17 +1230,11 @@ public partial class OverlayWindow : Window
         })));
         menu.Items.Add(add);
 
-        var profiles = new MenuItem { Header = Strings.Get("Menu_Profile") };
-        for (var i = 0; i < ShortcutStore.ProfileCount; i++)
-        {
-            var profile = i;
-            var entry = Item(Strings.Format("Bar_ProfileTooltip", profile + 1),
-                () => ShortcutStore.SwitchProfile(profile));
-            entry.IsCheckable = true;
-            entry.IsChecked = profile == ShortcutStore.Profile;
-            profiles.Items.Add(entry);
-        }
-        menu.Items.Add(profiles);
+        var nextBar = Item(
+            Strings.Format("Menu_SwitchBar", (ShortcutStore.Profile + 1) % ShortcutStore.ProfileCount + 1),
+            SwitchToNextBar);
+        nextBar.InputGestureText = "Tab";
+        menu.Items.Add(nextBar);
 
         menu.Items.Add(new Separator());
 

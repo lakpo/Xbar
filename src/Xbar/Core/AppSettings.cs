@@ -32,7 +32,7 @@ public enum UpdateMode
     NotifyOnly
 }
 
-/// <summary>Configuration globale, commune aux trois configurations de raccourcis.</summary>
+/// <summary>Configuration globale, commune aux deux barres de raccourcis.</summary>
 public sealed class AppSettings
 {
     // --- Apparence ---
@@ -61,9 +61,6 @@ public sealed class AppSettings
     /// <summary>Décaler la barre vers la gauche de la largeur d'une scrollbar verticale.</summary>
     public bool AvoidScrollbar { get; set; } = true;
 
-    /// <summary>Affiche en bas de la barre les trois pastilles qui permettent de changer de configuration.</summary>
-    public bool ShowProfileSwitcher { get; set; } = true;
-
     // --- Comportement ---
     public bool AutoHide { get; set; }
     public bool BarEnabled { get; set; } = true;
@@ -83,11 +80,11 @@ public sealed class AppSettings
     /// <summary>Nombre de dossiers conserves dans l'historique.</summary>
     public int MaxHistoryFolders { get; set; } = 20;
 
-    // --- Configurations ---
+    // --- Barres ---
 
     /// <summary>
-    /// Configuration de raccourcis active, de 0 a ShortcutStore.ProfileCount - 1. Chacune a sa
-    /// propre liste ; voir AppPaths.ShortcutsFileFor.
+    /// Barre de raccourcis active, de 0 a ShortcutStore.ProfileCount - 1. Chacune a sa propre
+    /// liste ; voir AppPaths.ShortcutsFileFor.
     /// </summary>
     public int ActiveProfile { get; set; }
 

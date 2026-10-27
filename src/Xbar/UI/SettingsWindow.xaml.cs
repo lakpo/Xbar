@@ -73,7 +73,6 @@ public partial class SettingsWindow : Window
         OpacitySlider.Value = s.Opacity;
         EdgeMarginSlider.Value = s.EdgeMargin;
         AvoidScrollbarBox.IsChecked = s.AvoidScrollbar;
-        ProfileSwitcherBox.IsChecked = s.ShowProfileSwitcher;
 
         AutoHideBox.IsChecked = s.AutoHide;
         DoubleClickBox.IsChecked = s.DoubleClickGoUp;
@@ -113,7 +112,6 @@ public partial class SettingsWindow : Window
         EdgeMarginSlider.ValueChanged += (_, _) => { UpdateValueLabels(); Apply(); };
 
         AvoidScrollbarBox.Click += (_, _) => Apply();
-        ProfileSwitcherBox.Click += (_, _) => Apply();
         UpdateModeBox.SelectionChanged += (_, _) => Apply();
         ProfileBox.SelectionChanged += (_, _) =>
         {
@@ -156,7 +154,6 @@ public partial class SettingsWindow : Window
             s.Opacity = OpacitySlider.Value;
             s.EdgeMargin = EdgeMarginSlider.Value;
             s.AvoidScrollbar = AvoidScrollbarBox.IsChecked == true;
-            s.ShowProfileSwitcher = ProfileSwitcherBox.IsChecked == true;
 
             s.AutoHide = AutoHideBox.IsChecked == true;
             s.DoubleClickGoUp = DoubleClickBox.IsChecked == true;
@@ -200,7 +197,7 @@ public partial class SettingsWindow : Window
 
     private void RefreshShortcuts()
     {
-        // La liste affichee est celle de la configuration active, qui a pu changer depuis la barre.
+        // La liste affichee est celle de la barre active, qui a pu changer depuis la barre.
         if (ProfileBox.SelectedIndex != ShortcutStore.Profile)
         {
             var loading = _loading;

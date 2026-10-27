@@ -67,8 +67,6 @@
 
                     <CheckBox x:Name="AvoidScrollbarBox" Margin="0,4"
                               Content="{loc:Loc Settings_AvoidScrollbar}" />
-                    <CheckBox x:Name="ProfileSwitcherBox" Margin="0,8,0,4"
-                              Content="{loc:Loc Settings_ShowProfileSwitcher}" />
 
                     <TextBlock Text="{loc:Loc Settings_EdgeMargin}" FontWeight="SemiBold" Margin="0,12,0,0" />
                     <DockPanel Margin="0,4,0,0">

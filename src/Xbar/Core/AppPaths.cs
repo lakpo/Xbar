@@ -22,7 +22,7 @@ public static class AppPaths
 
     public static string SettingsFile => Path.Combine(Root, "settings.json");
     /// <summary>
-    /// Liste de raccourcis d'une configuration. La premiere garde le nom historique
+    /// Liste de raccourcis d'une barre. La premiere garde le nom historique
     /// shortcuts.json : une installation existante la retrouve telle quelle.
     /// </summary>
     public static string ShortcutsFileFor(int profile) =>

@@ -107,10 +107,10 @@ de celle-ci.
 - le jeton `{currentFolder}` dans les arguments — par exemple `cursor.exe "{currentFolder}"` —
   est remplacé par le dossier affiché.
 
-**Trois configurations.** Chacune a sa propre liste de raccourcis. On passe de l'une à l'autre
-avec les trois petites pastilles en bas de la barre — la pleine est l'active — ou depuis le menu
-du clic droit sur la barre et l'onglet *Raccourcis* des paramètres. Les pastilles se masquent dans
-*Apparence*.
+**Deux barres.** Chacune a sa propre liste de raccourcis. Souris au-dessus de la barre, appuyez
+sur **Tab** pour passer à l'autre ; un court message indique la barre affichée. Le menu du clic
+droit sur la barre et l'onglet *Raccourcis* des paramètres le permettent aussi. La touche Tab
+n'est réservée que pendant le survol de la barre.
 
 **Bibliothèque d'icônes.** Clic droit sur un bouton → *Bibliothèque d'icônes…* pour choisir
 l'une des 7 400+ [Material Design Icons](https://pictogrammers.com/library/mdi/) (Apache 2.0)
@@ -150,8 +150,8 @@ intégrées.
 | Installé | `%AppData%\Xbar\` |
 | Portable | `Data\` à côté de `Xbar.exe` (marqueur : un fichier nommé `portable`) |
 
-Contenant `settings.json`, `shortcuts.json` (plus `shortcuts-2.json` et `shortcuts-3.json` pour
-les autres configurations), `history.json`, `icons\` et `logs\`.
+Contenant `settings.json`, `shortcuts.json` (plus `shortcuts-2.json` pour
+la seconde barre), `history.json`, `icons\` et `logs\`.
 
 Au tout premier lancement, la barre contient votre dossier Images — sous le nom que Windows lui
 donne — un séparateur, puis les deux actions intégrées.
