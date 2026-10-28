@@ -179,7 +179,6 @@ public partial class OverlayWindow : Window
     private void SwitchToNextBar()
     {
         ShortcutStore.SwitchToNextProfile();
-        ShowFeedback(Strings.Format("Bar_ProfileTooltip", ShortcutStore.Profile + 1), true);
     }
 
     // ---------------------------------------------------------------- contenu
